@@ -1,27 +1,17 @@
 package gui;
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import logic.MusicHandler;
 import logic.MusicNode;
-
-import javax.swing.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +20,11 @@ import java.util.ArrayList;
  * @author John Harris
  */
 
+/*
+ FIXME: 9/26/2020
+    - Create variables for each component in the gui so event listeners can reference them
+    - Fix invocationException
+ */
 
 public class Gui extends Application {
 
@@ -55,7 +50,7 @@ public class Gui extends Application {
         BorderPane borderPane = new BorderPane();
         stage.setTitle("MP3 Player");
         borderPane.setTop(createTop());
-        borderPane.setCenter(createCenter());
+        //borderPane.setCenter(createCenter());
         borderPane.setBottom(createBottom());
         Scene scene = new Scene(borderPane, 600, 450);
         stage.setScene(scene);
@@ -63,27 +58,28 @@ public class Gui extends Application {
     }
 
     // http://fxexperience.com/2011/12/styling-fx-buttons-with-css/ use this to make a file
-    // Top menu file, help etc
     private Node createTop() {
         HBox top = new HBox(new Button("Add Song"), new Button("Delete Song"));
         top.setAlignment(Pos.CENTER);
         return top;
     }
 
-    // Shows list of music
     private Node createCenter() {
-        // Grab the data from the MusicHandler and use a loop to create all of them in a holder
-        ArrayList<MusicNode> songs = new MusicHandler().getMusicList();
-
+        ScrollPane scrollPane = new ScrollPane();
+        MusicHandler musicHandler = new MusicHandler();
+        ArrayList<MusicNode> songs = musicHandler.getMusicList();
         for (int i = 0; i < songs.size(); i++) {
-
+            // create components inside scroll pane HBox
         }
-        return null;
+        return scrollPane;
     }
 
     // Pause, play, etc
     private Node createBottom() {
-        HBox bottom = new HBox(new Button("Previous"), new ToggleButton("Play/Skip"), new Button("Next"));
+        Button previous = new Button("Previous");
+        ToggleButton onAndOffToggle = new ToggleButton("Play/Skip");
+        Button next = new Button("Next");
+        HBox bottom = new HBox(previous, onAndOffToggle, next);
         bottom.setAlignment(Pos.CENTER);
         return bottom;
     }
