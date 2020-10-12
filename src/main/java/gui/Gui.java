@@ -11,10 +11,10 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import logic.LinkedMusicNode;
 import logic.MusicHandler;
 import logic.MusicNode;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
     TODO:
         - Create variables for each component in the gui so event listeners can reference them
         - Fix invocationException
-        - Add open file explorer when add song is pressed
+        - MusicNode is a collection
  */
 
 
@@ -95,7 +95,7 @@ public class Gui extends Application {
     private Node createCenter() {
         HBox center;
         MusicHandler musicHandler = new MusicHandler();
-        ArrayList<MusicNode> songs = musicHandler.getMusicList();
+        LinkedMusicNode songs = musicHandler.getMusicList();
         if (songs == null) {
             Text text = new Text("Music List is Empty :(");
             center = new HBox(text);

@@ -12,5 +12,6 @@ import java.util.ArrayList;
 public class SongDisplay {
     private ArrayList<MusicNode> listOfSongs = new ArrayList<>();
     public SongDisplay() {
+
     }
 }

@@ -12,17 +12,17 @@ public class MusicHandler {
     private File mp3;
     protected SongDisplay songDisplay;
 
-    public ArrayList<MusicNode> getMusicList() {
-        File mp3 = new File("mp3list.txt");
-        if (!mp3.exists()) {
-
+    public LinkedMusicNode getMusicList() {
+        File mp3File = new File("mp3list.txt");
+        if (!mp3File.exists()) {
+            return null;
         }
-        return null;
+        return generateSongsList(mp3File);
     }
 
-    public ArrayList<File> generateSongsList(File mp3) {
+    public LinkedMusicNode generateSongsList(File mp3) {
         songDisplay = new SongDisplay();
-        ArrayList<File> songsList = new ArrayList<>();
+        LinkedMusicNode songsList = new LinkedMusicNode();
         return songsList;
     }
 }
