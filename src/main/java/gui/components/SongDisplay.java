@@ -1,6 +1,6 @@
 package gui.components;
 
-import logic.MusicNode;
+import logic.linkedmusiclist.MusicNode;
 
 import java.util.ArrayList;
 
