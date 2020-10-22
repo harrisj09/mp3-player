@@ -1,5 +1,7 @@
 import gui.Gui;
 
+import java.io.IOException;
+
 public class Main {
 
     /**
@@ -8,7 +10,15 @@ public class Main {
      * @author John Harris
      */
 
-    public static void main(String[] args) {
+    /*
+    Do this
+    public static void main(String[]args) {
+        Logic logic = new logic();
+        Gui gui = new Gui(logic);
+        gui.startApp();
+    }
+     */
+    public static void main(String[] args) throws IOException {
         Gui gui = new Gui();
         gui.startMp3();
     }

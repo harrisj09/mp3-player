@@ -11,18 +11,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.MusicHandler;
-import logic.linkedmusiclist.MusicNode;
+import logic.MusicNode;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Optional;
+import java.io.IOException;
 
 /**
  * Main Gui, starts the process of building the UI
@@ -38,13 +37,6 @@ import java.util.Optional;
         - MusicNode is a collection
  */
 
-
-/*
- FIXME: 9/26/2020
-    - Create variables for each component in the gui so event listeners can reference them
-    - Fix invocationException
- */
-
 public class Gui extends Application {
 
     private static MusicHandler musicHandler;
@@ -55,15 +47,22 @@ public class Gui extends Application {
         initUI(stage);
     }
 
-    public void startMp3() {
+    public void startMp3() throws IOException {
         musicHandler = new MusicHandler();
         songs = musicHandler.getMusicList();
+        // Method in application class
         launch();
     }
 
+    /**
+     * Beginning stage for application, creates base layout (BorderPane)
+     * and sets up stage
+     *
+     * @param stage - Object to hold everything
+     */
     private void initUI(Stage stage) {
-        BorderPane borderPane = new BorderPane();
         stage.setTitle("MP3 Player");
+        BorderPane borderPane = new BorderPane();
         borderPane.setTop(createTop(stage, borderPane));
         borderPane.setCenter(createCenter());
         borderPane.setBottom(createBottom());
@@ -72,35 +71,18 @@ public class Gui extends Application {
         stage.show();
     }
 
+
     // http://fxexperience.com/2011/12/styling-fx-buttons-with-css/ use this to make a file
     private Node createTop(Stage stage, BorderPane borderPane) {
         Button add = new Button("Add Song");
         HBox top = new HBox(add);
-        top.setAlignment(Pos.CENTER);
-        EventHandler<MouseEvent> addHandler = e -> {
+        EventHandler<MouseEvent> eventHandler = e -> {
             File song = new FileChooser().showOpenDialog(stage);
-            if (!getExtension(song.getName()).equals(Optional.of(".mp3"))) {
-                JFrame wrongFileType = new JFrame();
-                JOptionPane.showMessageDialog(wrongFileType, "Incorrect file type");
-            } else {
-                updateMusicList(song, borderPane);
-            }
+            handleFile(song, borderPane);
         };
-        add.addEventFilter(MouseEvent.MOUSE_CLICKED, addHandler);
+        top.setAlignment(Pos.CENTER);
+        add.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
         return top;
-    }
-
-    //https://www.baeldung.com/java-file-extension
-    private Optional<String> getExtension(String filename) {
-        return Optional.ofNullable(filename)
-                .filter(f -> f.contains("."))
-                .map(f -> f.substring(filename.lastIndexOf(".")));
-    }
-
-    private void updateMusicList(File song, BorderPane borderPane) {
-        musicHandler.updateSongsList(song);
-        songs = musicHandler.getMusicList();
-        borderPane.setCenter(createCenter());
     }
 
     private Node createCenter() {
@@ -114,7 +96,6 @@ public class Gui extends Application {
         return list;
     }
 
-    // Pause, play, etc
     private Node createBottom() {
         Button previous = new Button("Previous");
         ToggleButton onAndOffToggle = new ToggleButton("Play/Skip");
@@ -122,5 +103,38 @@ public class Gui extends Application {
         HBox bottom = new HBox(previous, onAndOffToggle, next);
         bottom.setAlignment(Pos.CENTER);
         return bottom;
+    }
+
+    /**
+     * Checks file extension to see if its valid.
+     *
+     * @param song - File path given
+     * @param borderPane - Layout
+     */
+    private void handleFile(File song, BorderPane borderPane) {
+        String songName = song.getName().substring(song.getName().lastIndexOf("."));
+        if (!songName.equals(".mp3")) {
+            JOptionPane.showMessageDialog(new JFrame(), "Incorrect file type");
+        } else {
+            try {
+                updateMusicList(song, borderPane);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Called by handleFile, calls musicMusicHandler to update songs list
+     * and rewrites the center in the borderPane
+     *
+     * @param song - Mp3 File given from handleFile
+     * @param borderPane - Layout
+     * @throws IOException - Invalid file
+     */
+    private void updateMusicList(File song, BorderPane borderPane) throws IOException {
+        musicHandler.updateSongsList(song);
+        songs = musicHandler.getMusicList();
+        borderPane.setCenter(createCenter());
     }
 }

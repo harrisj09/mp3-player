@@ -1,6 +1,6 @@
 package gui.components;
 
-import logic.linkedmusiclist.MusicNode;
+import logic.MusicNode;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,5 @@ import java.util.ArrayList;
 public class SongDisplay {
     private ArrayList<MusicNode> listOfSongs = new ArrayList<>();
     public SongDisplay() {
-
     }
 }
