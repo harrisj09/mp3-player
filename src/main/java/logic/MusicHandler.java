@@ -1,13 +1,12 @@
 package logic;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import gui.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
 
 public class MusicHandler {
 
@@ -18,7 +17,7 @@ public class MusicHandler {
      */
     private File mp3File = new File("mp3list.txt");
 
-    public ObservableList<MusicNode> getMusicList() throws IOException {
+    public ObservableList<MusicNode> getMusicList() throws IOException, InvalidDataException, UnsupportedTagException {
         if (!mp3File.exists()) {
             mp3File.createNewFile();
             return null;
@@ -29,8 +28,9 @@ public class MusicHandler {
         return generateSongsList(mp3File);
     }
 
-    public ObservableList<MusicNode> generateSongsList(File mp3) {
+    public ObservableList<MusicNode> generateSongsList(File mp3) throws IOException, InvalidDataException, UnsupportedTagException {
         ObservableList<MusicNode> items = FXCollections.observableArrayList();
+        FileReader fr = new FileReader(mp3File);
         // go through file and create list
 /*        try {
             Scanner s = new Scanner(mp3);
@@ -44,8 +44,18 @@ public class MusicHandler {
     }
 
     // https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html
-    public void updateSongsList(File file) {
+    public void updateSongsList(File file) throws IOException {
+        FileWriter writer = new FileWriter(mp3File);
         // write to txt with new file path
         // getMusicList is invoked
+        // make sure you flush
+        System.out.println("Added" + file.getAbsolutePath());
+        writer.write(file.getName());
+        writer.flush();
+        writer.close();
+    }
+
+    // recursive
+    public void removeSong(String path) {
     }
 }

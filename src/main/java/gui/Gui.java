@@ -1,5 +1,7 @@
 package gui;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +40,7 @@ public class Gui extends Application {
         initUI(stage);
     }
 
-    public void startMp3() throws IOException {
+    public void startMp3() throws IOException, InvalidDataException, UnsupportedTagException {
         musicHandler = new MusicHandler();
         songs = musicHandler.getMusicList();
         launch();
@@ -63,7 +65,7 @@ public class Gui extends Application {
 
 
     /**
-     * The following methods create BorderPane Layouts
+     * The following methods create the BorderPane Layouts
      */
 
     private Node createTop(Stage stage, BorderPane borderPane) {
@@ -111,7 +113,7 @@ public class Gui extends Application {
         } else {
             try {
                 updateMusicList(song, borderPane);
-            } catch (IOException ioException) {
+            } catch (IOException | InvalidDataException | UnsupportedTagException ioException) {
                 ioException.printStackTrace();
             }
         }
@@ -125,7 +127,7 @@ public class Gui extends Application {
      * @param borderPane - Layout
      * @throws IOException - Invalid file
      */
-    private void updateMusicList(File song, BorderPane borderPane) throws IOException {
+    private void updateMusicList(File song, BorderPane borderPane) throws IOException, InvalidDataException, UnsupportedTagException {
         musicHandler.updateSongsList(song);
         songs = musicHandler.getMusicList();
         borderPane.setCenter(createCenter());

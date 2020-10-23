@@ -1,3 +1,5 @@
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import gui.Gui;
 
 import java.io.IOException;
@@ -9,16 +11,7 @@ public class Main {
      *
      * @author John Harris
      */
-
-    /*
-    Do this
-    public static void main(String[]args) {
-        Logic logic = new logic();
-        Gui gui = new Gui(logic);
-        gui.startApp();
-    }
-     */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException {
         Gui gui = new Gui();
         gui.startMp3();
     }
