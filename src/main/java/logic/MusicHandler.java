@@ -5,7 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class MusicHandler {
 
@@ -31,7 +33,10 @@ public class MusicHandler {
         ObservableList<MusicNode> items = FXCollections.observableArrayList();
         // go through file and create list
 /*        try {
+            Scanner s = new Scanner(mp3);
+            while() {
 
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }*/

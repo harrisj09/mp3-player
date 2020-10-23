@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javafx.scene.text.Text;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -18,7 +19,6 @@ import org.xml.sax.SAXException;
 
 public class MusicNode {
     private File file;
-    private Metadata metadata;
     private String title;
     private String artist;
     private String length;
@@ -28,38 +28,27 @@ public class MusicNode {
         createComponent();
     }
 
-    public Node createComponent() throws TikaException, IOException, SAXException {
-        grabMetaData();
-        HBox component = new HBox(createButton());
-        return null;
-    }
-
     public Node getComponent() throws TikaException, IOException, SAXException {
-        createComponent();
-        return null;
+        return createComponent();
     }
 
-
-    /*
-    TODO: Fix this alex says it was fucking horrible
-     */
+    private Node createComponent() throws TikaException, IOException, SAXException {
+        grabMetaData();
+        return new HBox(new Button("Play/Pause"), new Text(title), new Text(artist), new Text(length));
+    }
 
     // https://dzone.com/articles/how-retrieveextract-metadata
     private void grabMetaData() throws IOException, TikaException, SAXException {
-        createObjects();
-        title = metadata.get("title");
-        artist = metadata.get("xmpdm:artist");
-        length = metadata.get("xmpdm:duration");
-    }
-
-    private void createObjects() throws IOException, TikaException, SAXException {
-        metadata = new Metadata();
+        Metadata metadata = new Metadata();
         BodyContentHandler handler = new BodyContentHandler();
         FileInputStream inputstream = new FileInputStream(file);
         ParseContext pcontext = new ParseContext();
         Mp3Parser mp3Parser = new Mp3Parser();
         mp3Parser.parse(inputstream, handler, metadata, pcontext);
         inputstream.close();
+        title = metadata.get("title");
+        artist = metadata.get("xmpdm:artist");
+        length = metadata.get("xmpdm:duration");
     }
 
     private Button createButton() {
