@@ -1,12 +1,10 @@
 package logic;
 
-import gui.components.SongDisplay;
+import gui.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MusicHandler {
@@ -16,7 +14,6 @@ public class MusicHandler {
      *
      * Grabs the LinkedMusicList
      */
-    protected SongDisplay songDisplay;
     private File mp3File = new File("mp3list.txt");
 
     public ObservableList<MusicNode> getMusicList() throws IOException {
@@ -31,7 +28,6 @@ public class MusicHandler {
     }
 
     public ObservableList<MusicNode> generateSongsList(File mp3) {
-        songDisplay = new SongDisplay();
         ObservableList<MusicNode> items = FXCollections.observableArrayList();
         // go through file and create list
 /*        try {

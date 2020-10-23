@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.MusicHandler;
-import logic.MusicNode;
+import gui.components.MusicNode;
 
 import javax.swing.*;
 import java.io.File;
@@ -28,15 +28,6 @@ import java.io.IOException;
  *
  * @author John Harris
  */
-
-
-/*
-    TODO:
-        - Create variables for each component in the gui so event listeners can reference them
-        - Fix invocationException
-        - MusicNode is a collection
- */
-
 public class Gui extends Application {
 
     private static MusicHandler musicHandler;
@@ -50,7 +41,6 @@ public class Gui extends Application {
     public void startMp3() throws IOException {
         musicHandler = new MusicHandler();
         songs = musicHandler.getMusicList();
-        // Method in application class
         launch();
     }
 
@@ -72,7 +62,10 @@ public class Gui extends Application {
     }
 
 
-    // http://fxexperience.com/2011/12/styling-fx-buttons-with-css/ use this to make a file
+    /**
+     * The following methods create BorderPane Layouts
+     */
+
     private Node createTop(Stage stage, BorderPane borderPane) {
         Button add = new Button("Add Song");
         HBox top = new HBox(add);

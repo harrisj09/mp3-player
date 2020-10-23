@@ -23,6 +23,12 @@
             <artifactId>mp3agic</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers</artifactId>
+            <version>1.24.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -45,5 +51,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
