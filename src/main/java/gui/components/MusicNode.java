@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import javafx.scene.text.Text;
 
+import javax.print.attribute.standard.Media;
+
 /**
  * https://github.com/mpatric/mp3agic
  *
@@ -17,6 +19,8 @@ import javafx.scene.text.Text;
  * https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java/10237397#10237397
  *
  * MusicNode contains the JavaFX node for each song
+ *
+ * @author John Harris
  */
 public class MusicNode {
     private File file;
@@ -35,7 +39,10 @@ public class MusicNode {
     }
 
     public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {
-        handleMp3Type();
+        handleMp3Type();/*
+        Why does this not work
+        Media pick = new Media("put.mp3");
+        MediaPlayer player = new MediaPlayer(pick);*/
         return new HBox(new Button("Play/Pause"), new Text(title), new Text(artist), new Text(convertTime()));
     }
 
@@ -49,15 +56,16 @@ public class MusicNode {
     }
 
     private void handleMp3Type() throws InvalidDataException, IOException, UnsupportedTagException {
+        // I pray to god nothing has a customId
         Mp3File mp3File = new Mp3File(file);
         if(mp3File.hasId3v1Tag()) {
             ID3v1 id3v1Tag = mp3File.getId3v1Tag();
             getMetaData(id3v1Tag);
-            return;
         }
-        // I pray to god nothing has a customId
-        ID3v2 id3v2Tag = mp3File.getId3v2Tag();
-        getMetaData(id3v2Tag);
+        if (mp3File.hasId3v2Tag()) {
+            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+            getMetaData(id3v2Tag);
+        }
     }
 
     private void getMetaData(ID3v1 idTag) {
