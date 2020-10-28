@@ -6,6 +6,7 @@ import gui.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.sound.sampled.AudioInputStream;
 import java.io.*;
 import java.util.Scanner;
 
@@ -20,13 +21,14 @@ import java.util.Scanner;
 public class MusicHandler {
 
     private File mp3File = new File("mp3list.txt");
+    AudioInputStream audioInputStream;
 
     public ObservableList<MusicNode> getMusicList() throws IOException, InvalidDataException, UnsupportedTagException {
         if (!mp3File.exists()) {
             mp3File.createNewFile();
             return null;
         }
-        if(mp3File.length() == 0) {
+        if(isEmptyFile()) {
             return null;
         }
         return generateSongsList(mp3File);
@@ -51,14 +53,19 @@ public class MusicHandler {
 
     // https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html
     public void updateSongsList(File file) throws IOException {
-        FileWriter writer = new FileWriter(mp3File);
+        FileWriter writer = new FileWriter(mp3File, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(writer);
         System.out.println("Added" + file.getAbsolutePath());
-        writer.write(file.getName());
-        writer.flush();
-        writer.close();
+        if (isEmptyFile()) {
+            bufferedWriter.write(file.getAbsolutePath());
+        } else {
+            bufferedWriter.write("\n" + file.getAbsolutePath());
+        }
+        bufferedWriter.flush();
+        bufferedWriter.close();
     }
 
-    public void removeSong(String path) {
-
+    private boolean isEmptyFile() {
+        return mp3File.length() == 0;
     }
 }

@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import logic.MusicHandler;
 import gui.components.MusicNode;
 
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class Gui extends Application {
 
     private static MusicHandler musicHandler;
     private ObservableList<MusicNode> songs;
+    // https://www.geeksforgeeks.org/play-audio-file-using-java/
+    private AudioInputStream audioInputStream;
 
     @Override
     public void start(Stage stage) {
@@ -43,6 +46,7 @@ public class Gui extends Application {
     public void startMp3() throws IOException, InvalidDataException, UnsupportedTagException {
         musicHandler = new MusicHandler();
         songs = musicHandler.getMusicList();
+        audioInputStream = null;
         launch();
     }
 
@@ -50,7 +54,7 @@ public class Gui extends Application {
      * Beginning stage for application, creates base layout (BorderPane)
      * and sets up stage
      *
-     * @param stage - Object to hold everything
+     * @param stage - Object in javafx to hold everything
      */
     private void initUI(Stage stage) {
         stage.setTitle("MP3 Player");

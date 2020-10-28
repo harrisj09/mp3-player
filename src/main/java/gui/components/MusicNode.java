@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.text.Text;
+import logic.MusicHandler;
 
 import javax.print.attribute.standard.Media;
 
@@ -29,6 +30,7 @@ public class MusicNode {
     private long lengthInSeconds;
     private Mp3File mp3File;
     private boolean isPlaying = false;
+    private MusicHandler musicHandler;
 
     /*
     Make it so I dont need all of these exceptions
@@ -39,10 +41,7 @@ public class MusicNode {
     }
 
     public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {
-        handleMp3Type();/*
-        Why does this not work
-        Media pick = new Media("put.mp3");
-        MediaPlayer player = new MediaPlayer(pick);*/
+        handleMp3Type();
         return new HBox(new Button("Play/Pause"), new Text(title), new Text(artist), new Text(convertTime()));
     }
 
@@ -73,19 +72,4 @@ public class MusicNode {
         artist = idTag.getAlbum();
         lengthInSeconds = mp3File.getLengthInSeconds();
     }
-
-    /*
-     https://docs.oracle.com/javafx/2/api/javafx/scene/media/MediaPlayer.html
-     https://docs.oracle.com/javafx/2/api/javafx/scene/media/Media.html#getMetadata()
-     */
-/*    private Button createButton() {
-        Button playPause = new Button("Play/Pause");
-        EventHandler<MouseEvent> eventHandler = e -> {
-        // you need a media class and then a mediaplayer object
-            isPlaying ? mediaPlayer.play() : mediaPlayer.pause();
-            isPlaying = !isPlaying;
-        };
-        playPause.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-        return null;
-    }*/
 }
