@@ -1,8 +1,9 @@
 package logic;
 
 public class AudioPlayer {
-    // returns whats currently playing
-    public String currentlyPlaying() {
-        return "";
+
+    private MusicHandler musicHandler;
+    public AudioPlayer(MusicHandler musicHandler) {
+        this.musicHandler = musicHandler;
     }
 }

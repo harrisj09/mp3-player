@@ -22,6 +22,7 @@ import logic.MusicHandler;
 import gui.components.MusicNode;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,13 @@ public class Gui extends Application {
     private ObservableList<MusicNode> songs;
     // https://www.geeksforgeeks.org/play-audio-file-using-java/
     private AudioInputStream audioInputStream;
+    private String artist;
+    private String song;
+
+    /**
+     * Buttons for the center
+     */
+    private Node center;
 
     @Override
     public void start(Stage stage) {
@@ -45,11 +53,17 @@ public class Gui extends Application {
 
     public void startMp3() throws IOException, InvalidDataException, UnsupportedTagException {
         musicHandler = new MusicHandler();
-        songs = musicHandler.getMusicList();
         audioInputStream = null;
+        artist = null;
+        song = null;
+        center = createCenter();
+        getSongsList();
         launch();
     }
 
+    public void getSongsList() throws InvalidDataException, IOException, UnsupportedTagException {
+        songs = musicHandler.getMusicList();
+    }
     /**
      * Beginning stage for application, creates base layout (BorderPane)
      * and sets up stage
@@ -67,11 +81,21 @@ public class Gui extends Application {
         stage.show();
     }
 
+    public String getSong() {
+        return artist + " - " + song;
+    }
+
+    public void changeSong(String artist, String song) {
+        this.artist = artist;
+        this.song = song;
+    }
 
     /**
      * The following methods create the BorderPane Layouts
+     * Also apply event listeners.
+     *
+     * Event listener opens explorer, calls handleFile.
      */
-
     private Node createTop(Stage stage, BorderPane borderPane) {
         Button add = new Button("Add Song");
         HBox top = new HBox(add);
@@ -86,6 +110,7 @@ public class Gui extends Application {
 
     private Node createCenter() {
         if (songs == null) {
+            System.out.println("Music list is empty");
             return new HBox(new Text("Music List is Empty :("));
         }
         // https://docs.oracle.com/javafx/2/ui_controls/list-view.htm

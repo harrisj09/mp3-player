@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.Scanner;
 
@@ -21,37 +22,48 @@ import java.util.Scanner;
 public class MusicHandler {
 
     private File mp3File = new File("mp3list.txt");
-    AudioInputStream audioInputStream;
+    private AudioPlayer audioPlayer;
+
+    public MusicHandler() {
+        audioPlayer = new AudioPlayer(this);
+    }
 
     public ObservableList<MusicNode> getMusicList() throws IOException, InvalidDataException, UnsupportedTagException {
+        System.out.println("At getMusicList");
         if (!mp3File.exists()) {
+            System.out.println("Doesnt exist");
             mp3File.createNewFile();
             return null;
         }
         if(isEmptyFile()) {
+            System.out.println("Its empty");
             return null;
         }
+        System.out.println("Not empty");
         return generateSongsList(mp3File);
+    }
+
+    private boolean isEmptyFile() {
+        return mp3File.length() == 0;
     }
 
     public ObservableList<MusicNode> generateSongsList(File mp3) throws IOException, InvalidDataException, UnsupportedTagException {
         ObservableList<MusicNode> items = FXCollections.observableArrayList();
         try {
             Scanner reader = new Scanner(mp3File);
-            String path = reader.nextLine();
-            while(reader.hasNextLine()) {
-                // unsure if I should do this
-                System.out.println(path);
-                path = reader.nextLine();
-                // print out
+            BufferedReader br = new BufferedReader(new FileReader(mp3File));
+            String st;
+            while((st = br.readLine()) != null) {
+                System.out.println(st);
+                items.add(new MusicNode(new File(st)));
             }
         } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
         return items;
     }
-
     // https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html
+
     public void updateSongsList(File file) throws IOException {
         FileWriter writer = new FileWriter(mp3File, true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
@@ -63,9 +75,5 @@ public class MusicHandler {
         }
         bufferedWriter.flush();
         bufferedWriter.close();
-    }
-
-    private boolean isEmptyFile() {
-        return mp3File.length() == 0;
     }
 }

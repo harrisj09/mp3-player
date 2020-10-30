@@ -11,8 +11,6 @@ import java.io.IOException;
 import javafx.scene.text.Text;
 import logic.MusicHandler;
 
-import javax.print.attribute.standard.Media;
-
 /**
  * https://github.com/mpatric/mp3agic
  *
@@ -27,8 +25,8 @@ public class MusicNode {
     private File file;
     private String title;
     private String artist;
+    private final Mp3File mp3File;
     private long lengthInSeconds;
-    private Mp3File mp3File;
     private boolean isPlaying = false;
     private MusicHandler musicHandler;
 
