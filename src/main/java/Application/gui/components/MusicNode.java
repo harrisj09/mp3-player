@@ -1,4 +1,4 @@
-package gui.components;
+package Application.gui.components;
 
 import com.mpatric.mp3agic.*;
 import javafx.scene.Node;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.text.Text;
-import logic.MusicHandler;
+import Application.logic.MusicHandler;
 
 /**
  * https://github.com/mpatric/mp3agic

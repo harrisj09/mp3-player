@@ -1,13 +1,11 @@
-package logic;
+package Application.logic;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import gui.components.MusicNode;
+import Application.gui.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.Scanner;
 
@@ -22,10 +20,9 @@ import java.util.Scanner;
 public class MusicHandler {
 
     private File mp3File = new File("mp3list.txt");
-    private AudioPlayer audioPlayer;
 
     public MusicHandler() {
-        audioPlayer = new AudioPlayer(this);
+
     }
 
     public ObservableList<MusicNode> getMusicList() throws IOException, InvalidDataException, UnsupportedTagException {

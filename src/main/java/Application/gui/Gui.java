@@ -1,5 +1,6 @@
-package gui;
+package Application.gui;
 
+import Application.gui.components.MusicNode;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.application.Application;
@@ -18,11 +19,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import logic.MusicHandler;
-import gui.components.MusicNode;
+import Application.logic.MusicHandler;
 
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class Gui extends Application {
         initUI(stage);
     }
 
-    public void startMp3() throws IOException, InvalidDataException, UnsupportedTagException {
+    public void buildGui() throws IOException, InvalidDataException, UnsupportedTagException {
         musicHandler = new MusicHandler();
         audioInputStream = null;
         artist = null;
@@ -79,15 +78,6 @@ public class Gui extends Application {
         Scene scene = new Scene(borderPane, 600, 450);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public String getSong() {
-        return artist + " - " + song;
-    }
-
-    public void changeSong(String artist, String song) {
-        this.artist = artist;
-        this.song = song;
     }
 
     /**
@@ -152,7 +142,7 @@ public class Gui extends Application {
      * Called by handleFile, calls musicMusicHandler to update songs list
      * and rewrites the center in the borderPane
      *
-     * @param song - Mp3 File given from handleFile
+     * @param song - Application.Mp3 File given from handleFile
      * @param borderPane - Layout
      * @throws IOException - Invalid file
      */

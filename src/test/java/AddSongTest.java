@@ -1,4 +1,4 @@
-import gui.Gui;
+import Application.gui.Gui;
 import org.junit.jupiter.api.Test;
 
 public class AddSongTest {
