@@ -10,3 +10,6 @@ exist it'll create a new one.
 # Current State & Future plans
 Right now it's just a basic MP3 player for the time being, so I have something to submit for a final project. Eventually 
 I plan on having this be able to stream music to the client through a raspberry pi.
+
+# Info
+[Gist on streaming](https://github.com/sam016/J-Mic-Stream-Over-Socket/blob/master/Edit%2000/SockMicServer/src/av/Server.java) 

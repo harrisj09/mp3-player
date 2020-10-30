@@ -15,15 +15,15 @@ public class Mp3 {
     private AudioPlayer audioPlayer;
     private Gui gui;
 
-    public Mp3(MusicHandler musicHandler, AudioPlayer audioPlayer, Gui gui) {
-        this.musicHandler = musicHandler;
-        this.audioPlayer = audioPlayer;
-        this.gui = gui;
+    public Mp3() {
+        this.musicHandler = new MusicHandler();
+        this.audioPlayer = new AudioPlayer();
+        this.gui = new Gui();
     }
 
     public void start() throws InvalidDataException, IOException, UnsupportedTagException {
-        ObservableList<MusicNode> songs = musicHandler.getMusicList();
-        // add an arg for music list and pass in songs
+        System.out.println("Checking from mp3: " + musicHandler.getMusicList().isEmpty());
+        gui.updateSongsList(musicHandler.getMusicList());
         gui.buildGui();
     }
 }

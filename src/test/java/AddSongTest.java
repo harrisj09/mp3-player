@@ -5,7 +5,7 @@ public class AddSongTest {
 
     @Test
     public void run() {
-        Gui gui = new Gui();
+        //Gui gui = new Gui();
 
     }
 }

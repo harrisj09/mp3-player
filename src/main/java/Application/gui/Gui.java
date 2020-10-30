@@ -21,7 +21,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import Application.logic.MusicHandler;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -33,43 +32,30 @@ import java.io.IOException;
  */
 public class Gui extends Application {
 
-    private static MusicHandler musicHandler;
-    private ObservableList<MusicNode> songs;
-    // https://www.geeksforgeeks.org/play-audio-file-using-java/
-    private AudioInputStream audioInputStream;
-    private String artist;
-    private String song;
+    private static MusicHandler musicHandler = new MusicHandler();
+    private ObservableList<MusicNode> songs =  null;
 
-    /**
-     * Buttons for the center
-     */
-    private Node center;
-
-    @Override
-    public void start(Stage stage) {
-        initUI(stage);
-    }
-
-    public void buildGui() throws IOException, InvalidDataException, UnsupportedTagException {
-        musicHandler = new MusicHandler();
-        audioInputStream = null;
-        artist = null;
-        song = null;
-        center = createCenter();
-        getSongsList();
+    public void buildGui() {
         launch();
     }
 
-    public void getSongsList() throws InvalidDataException, IOException, UnsupportedTagException {
-        songs = musicHandler.getMusicList();
+    public void updateSongsList(ObservableList<MusicNode> songs) {
+        System.out.println("Is Songs Empty?: " + songs.isEmpty());
+        this.songs = songs;
     }
+
+    @Override
+    public void start(Stage stage) {
+        buildStage(stage);
+    }
+
     /**
      * Beginning stage for application, creates base layout (BorderPane)
      * and sets up stage
      *
      * @param stage - Object in javafx to hold everything
      */
-    private void initUI(Stage stage) {
+    private void buildStage(Stage stage) {
         stage.setTitle("MP3 Player");
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(createTop(stage, borderPane));
@@ -79,6 +65,7 @@ public class Gui extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
 
     /**
      * The following methods create the BorderPane Layouts
@@ -99,8 +86,8 @@ public class Gui extends Application {
     }
 
     private Node createCenter() {
+        // FIXME This is always passes as soon as the program starts
         if (songs == null) {
-            System.out.println("Music list is empty");
             return new HBox(new Text("Music List is Empty :("));
         }
         // https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
@@ -112,9 +99,9 @@ public class Gui extends Application {
 
     private Node createBottom() {
         Button previous = new Button("Previous");
-        ToggleButton onAndOffToggle = new ToggleButton("Play/Skip");
+        ToggleButton playStatus = new ToggleButton("Play/Skip");
         Button next = new Button("Next");
-        HBox bottom = new HBox(previous, onAndOffToggle, next);
+        HBox bottom = new HBox(previous, playStatus, next);
         bottom.setAlignment(Pos.CENTER);
         return bottom;
     }

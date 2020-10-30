@@ -1,3 +1,6 @@
+import Application.Mp3;
+import Application.logic.AudioPlayer;
+import Application.logic.MusicHandler;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import Application.gui.Gui;
@@ -12,14 +15,7 @@ public class Main {
      * @author John Harris
      */
     public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException {
-
-        /*
-        TODO:
-
-            Mp3 mp3 = new Mp3(new MusicHandler(), new AudioPlayer(), new Gui());
-            mp3.start();
-         */
-        Gui gui = new Gui();
-        gui.buildGui();
+        Mp3 mp3 = new Mp3();
+        mp3.start();
     }
 }
