@@ -6,7 +6,6 @@ import Application.logic.AudioPlayer;
 import Application.logic.MusicHandler;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import javafx.collections.ObservableList;
 
 import java.io.IOException;
 
