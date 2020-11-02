@@ -1,6 +1,6 @@
 package Application.gui;
 
-import Application.gui.components.MusicNode;
+import Application.components.MusicNode;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.application.Application;

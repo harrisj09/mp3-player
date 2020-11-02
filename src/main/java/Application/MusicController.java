@@ -1,14 +1,10 @@
 package Application;
 
-import Application.gui.components.MusicNode;
+import Application.components.MusicNode;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.scene.control.ListView;
 
 import javax.swing.*;
 import java.io.*;
@@ -19,12 +15,18 @@ import java.util.Scanner;
  *
  * Use this for list view
  * https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Cell.html
+ *
+ * Use this for handling selected item?
+ * https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
+ * getSelectionModel().getSelectedIndex() – Returns the index of the currently selected items in a single-selection mode
+ * getSelectionModel().getSelectedItem() – Returns the currently selected item
+ * getFocusModel().getFocusedIndex() – Returns the index of the currently focused item
+ * getFocusModel().getFocusedItem() – Returns the currently focused item
  */
 
 public class MusicController {
 
     private final MusicModel musicModel;
-    // TODO Move this to model
 
     public MusicController(MusicModel musicModel) {
         this.musicModel = musicModel;
@@ -37,6 +39,22 @@ public class MusicController {
     public ObservableList<MusicNode> grabCenterContents() {
         createSongsList();
         return musicModel.getMusicList();
+    }
+
+    public void createSongsList() {
+        ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
+        try {
+            Scanner reader = new Scanner(musicModel.getMp3File());
+            BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
+            String filePath;
+            while((filePath = br.readLine()) != null) {
+                // TODO Fix this so it actually take in a node
+                musicList.add(new MusicNode(new File(filePath)));
+            }
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            e.printStackTrace();
+        }
+        musicModel.setMusicList(musicList);
     }
 
     // this calls the Model to update the observable list
@@ -76,21 +94,5 @@ public class MusicController {
     // Create a new list, call setMusicList in Model
     public boolean isEmptyFile() {
         return musicModel.getMp3File().length() == 0;
-    }
-
-    public void createSongsList() {
-        ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
-        try {
-            Scanner reader = new Scanner(musicModel.getMp3File());
-            BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
-            String filePath;
-            while((filePath = br.readLine()) != null) {
-                // TODO Fix this so it actually take in a node
-                musicList.add(new MusicNode(new File(filePath)));
-            }
-        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
-            e.printStackTrace();
-        }
-        musicModel.setMusicList(musicList);
     }
 }

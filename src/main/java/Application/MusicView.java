@@ -1,6 +1,6 @@
 package Application;
 
-import Application.gui.components.MusicNode;
+import Application.components.MusicNode;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -49,7 +50,7 @@ public class MusicView {
             try {
                 musicController.addSong(song);
                 // TODO call a method (not createCenter) that applies the updated listview
-                // so something like borderPane.setCenter(method());
+                borderPane.setCenter(updateCenter(song));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -61,13 +62,13 @@ public class MusicView {
 
     // TODO make it so the file is created immediately (kinda like flush)
     public Node createCenter() throws IOException {
+        // If file doesn't exist
         if (!musicController.getMusicModel().getMp3File().exists()) {
             musicController.getMusicModel().createFile();
-            System.out.println("File doesnt exist");
             return new HBox(new Text("Music List is Empty :("));
         }
+        // If file is empty
         if(musicController.isEmptyFile()) {
-            System.out.println("File is empty");
             return new HBox(new Text("Music List is Empty :("));
         }
         // Theres a method called setCellFactory for ListView
@@ -78,6 +79,19 @@ public class MusicView {
     }
 
     public HBox createBottom() {
-        return null;
+        Button previous = new Button("Previous");
+        ToggleButton playStatus = new ToggleButton("Play/Skip");
+        Button next = new Button("Next");
+        HBox bottom = new HBox(previous, playStatus, next);
+        bottom.setAlignment(Pos.CENTER);
+        return bottom;
+    }
+
+    // Called after event listener is clicked
+    public Node updateCenter(File file) {
+        ListView<MusicNode> list = new ListView<>();
+        ObservableList<MusicNode> songs = musicController.grabCenterContents();
+        list.setItems(songs);
+        return list;
     }
 }

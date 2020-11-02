@@ -2,7 +2,7 @@ package Application.logic;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import Application.gui.components.MusicNode;
+import Application.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

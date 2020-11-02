@@ -1,6 +1,6 @@
 package Application;
 
-import Application.gui.components.MusicNode;
+import Application.components.MusicNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

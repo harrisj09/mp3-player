@@ -1,6 +1,4 @@
 import Application.*;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

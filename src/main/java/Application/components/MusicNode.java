@@ -1,4 +1,4 @@
-package Application.gui.components;
+package Application.components;
 
 import com.mpatric.mp3agic.*;
 import javafx.scene.Node;
