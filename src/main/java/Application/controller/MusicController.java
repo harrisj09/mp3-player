@@ -24,6 +24,12 @@ import java.util.Scanner;
  * getFocusModel().getFocusedItem() – Returns the currently focused item
  */
 
+
+/*
+TODO
+    - Have it so model is just directly called in controller (dont do musicController.getModel)
+    - adding songs turns the cells in hashmaps (it has to do with the updating songs method not using cells)
+ */
 public class MusicController {
 
     private final MusicModel musicModel;
@@ -32,6 +38,7 @@ public class MusicController {
         this.musicModel = musicModel;
     }
 
+    @Deprecated
     public MusicModel getMusicModel() {
         return musicModel;
     }
@@ -48,7 +55,6 @@ public class MusicController {
             BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
             String filePath;
             while((filePath = br.readLine()) != null) {
-                // TODO Fix this so it actually take in a node
                 musicList.add(new MusicNode(new File(filePath)));
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
@@ -62,7 +68,6 @@ public class MusicController {
         if(!isPlayableSong(file)) {
             JOptionPane.showMessageDialog(new JFrame(), "Incorrect file type");
         } else {
-            System.out.println("Correct file type");
             updateSongsFile(file);
         }
     }

@@ -13,6 +13,11 @@ public class MusicModel {
      * store currentlyplaying
      * store metadata
      */
+
+    /*
+    TODO
+        - Store the cell factory in here
+     */
     private ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
     private File mp3File = new File("mp3List.txt");
 

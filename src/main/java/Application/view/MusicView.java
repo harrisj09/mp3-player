@@ -1,5 +1,6 @@
 package Application;
 
+import Application.components.MusicCell;
 import Application.components.MusicNode;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -75,6 +76,7 @@ public class MusicView {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
+        list.setCellFactory(param -> new MusicCell());
         return list;
     }
 
@@ -92,6 +94,7 @@ public class MusicView {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
+        list.setCellFactory(param -> new MusicCell());
         return list;
     }
 }
