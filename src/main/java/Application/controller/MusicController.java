@@ -9,9 +9,11 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.io.*;
 
@@ -29,16 +31,13 @@ import java.io.*;
  * getFocusModel().getFocusedItem() – Returns the currently focused item
  */
 
-
-/*
-TODO
-    - Have it so model is just directly called in controller (dont do musicController.getModel)
-    - adding songs turns the cells in hashmaps (it has to do with the updating songs method not using cells)
- */
 public class MusicController {
 
     private final MusicModel musicModel;
     private final AudioController audioController;
+    private ObservableList<MusicNode> musicList;
+    private Button playStatus;
+    private String playStatusToggleText = "Play";
 
     public MusicController(MusicModel musicModel) {
         this.musicModel = musicModel;
@@ -50,6 +49,66 @@ public class MusicController {
         return musicModel.getMusicList();
     }
 
+    public HBox grabBottomContents() {
+        HBox bottom = new HBox(previousButton(), playStatusToggle(), skipButton());
+        return bottom;
+    }
+
+    private Button previousButton() {
+        Button previous = new Button("Previous");
+        EventHandler<MouseEvent> previousEvent = e -> {
+            if(canGoBack()) {
+                int nodeId = audioController.getCurrentlyPlaying().getId();
+                audioController.playSong(musicList.get(nodeId - 1));
+            }
+        };
+        previous.addEventFilter(MouseEvent.MOUSE_CLICKED, previousEvent);
+        return previous;
+    }
+
+    private Button playStatusToggle() {
+        playStatus = new Button(playStatusToggleText);
+        EventHandler<MouseEvent> toggleStatus = e -> {
+            if (audioController.getCurrentlyPlaying() != null) {
+                if (playStatusToggleText.equals("Play")) {
+                    playStatusToggleText = "Pause";
+                    audioController.resumeSong();
+                }
+                else {
+                    playStatusToggleText = "Play";
+                    audioController.pauseSong();
+                }
+                changeToggleText(playStatusToggleText);
+            }
+        };
+        playStatus.addEventFilter(MouseEvent.MOUSE_CLICKED, toggleStatus);
+        return playStatus;
+    }
+
+    private void changeToggleText(String text) {
+        playStatus.setText(text);
+    }
+
+    private Button skipButton() {
+        Button skip = new Button("Skip");
+        EventHandler<MouseEvent> skipEvent = e -> {
+            if(canSkip()) {
+                int nodeId = audioController.getCurrentlyPlaying().getId();
+                audioController.playSong(musicList.get(nodeId + 1));
+            }
+        };
+        skip.addEventFilter(MouseEvent.MOUSE_CLICKED, skipEvent);
+        return skip;
+    }
+
+    private boolean canGoBack() {
+        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() > 0;
+    }
+
+    private boolean canSkip() {
+        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() < musicList.size() - 1;
+    }
+
     public File getFile() {
         return musicModel.getMp3File();
     }
@@ -59,24 +118,23 @@ public class MusicController {
     }
 
     public void createSongsList() {
-        ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
+        musicList = FXCollections.observableArrayList();
         try {
             BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
             String filePath;
+            int counter = 0;
             while((filePath = br.readLine()) != null) {
-                // TODO Check if the path actually exists
                 File temp = new File(filePath);
                 if (temp.exists()) {
-                    MusicNode node = new MusicNode(new File(filePath));
+                    MusicNode node = new MusicNode(new File(filePath), counter);
+                    counter++;
                     musicList.add(node);
-                    EventHandler<MouseEvent> addEvent = e -> {
+                    EventHandler<MouseEvent> playEvent = e -> {
+                        System.out.println(node.getId());
+                        changeToggleText("Pause");
                         audioController.playSong(node);
                     };
-                    node.getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
-                }
-                else {
-                    // delete the line from the file
-                    System.out.println("doesnt exist");
+                    node.getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
                 }
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
@@ -137,9 +195,5 @@ public class MusicController {
     // Create a new list, call setMusicList in Model
     public boolean isEmptyFile() {
         return musicModel.getMp3File().length() == 0;
-    }
-
-    protected void getSong() {
-
     }
 }

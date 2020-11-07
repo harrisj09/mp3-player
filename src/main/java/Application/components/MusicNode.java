@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 
 /**
  * https://github.com/mpatric/mp3agic
@@ -32,17 +31,18 @@ public class MusicNode {
     private Button button = new Button("Play");
     private int id;
 
-    /*
-    TODO
-        - Mp3agic doesn't read metadata use something else
-     */
-    public MusicNode(File file) throws InvalidDataException, IOException, UnsupportedTagException {
+    public MusicNode(File file, int id) throws InvalidDataException, IOException, UnsupportedTagException {
         this.file = file;
+        this.id = id;
         mp3File = new Mp3File(file);
     }
 
     public File getFile() {
         return file;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {

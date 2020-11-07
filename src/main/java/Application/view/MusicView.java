@@ -77,18 +77,11 @@ public class MusicView {
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
         list.setCellFactory(param -> new MusicCell());
-/*        list.setOnMouseClicked(event -> {
-            MusicNode clickedSong = list.getSelectionModel().getSelectedItem();
-            System.out.println("clicked on " + clickedSong.getArtist());
-        });*/
         return list;
     }
 
     public HBox createBottom() {
-        Button previous = new Button("Previous");
-        ToggleButton playStatus = new ToggleButton("Play");
-        Button next = new Button("Next");
-        HBox bottom = new HBox(previous, playStatus, next);
+        HBox bottom = musicController.grabBottomContents();
         bottom.setAlignment(Pos.CENTER);
         return bottom;
     }
