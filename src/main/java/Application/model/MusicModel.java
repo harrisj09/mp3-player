@@ -1,4 +1,4 @@
-package Application;
+package Application.model;
 
 import Application.components.MusicNode;
 import javafx.collections.FXCollections;

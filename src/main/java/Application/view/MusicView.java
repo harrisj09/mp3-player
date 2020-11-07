@@ -1,7 +1,8 @@
-package Application;
+package Application.view;
 
 import Application.components.MusicCell;
 import Application.components.MusicNode;
+import Application.controller.MusicController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -46,7 +47,7 @@ public class MusicView {
     public HBox createTop() {
         Button add = new Button("Add Song");
         HBox top = new HBox(add);
-        EventHandler<MouseEvent> eventHandler = e -> {
+        EventHandler<MouseEvent> addEvent = e -> {
             File song = new FileChooser().showOpenDialog(stage);
             try {
                 musicController.addSong(song);
@@ -57,15 +58,14 @@ public class MusicView {
             }
         };
         top.setAlignment(Pos.CENTER);
-        add.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        add.addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
         return top;
     }
 
-    // TODO make it so the file is created immediately (kinda like flush)
     public Node createCenter() throws IOException {
         // If file doesn't exist
-        if (!musicController.getMusicModel().getMp3File().exists()) {
-            musicController.getMusicModel().createFile();
+        if (!musicController.getFile().exists()) {
+            musicController.createFile();
             return new HBox(new Text("Music List is Empty :("));
         }
         // If file is empty
@@ -77,6 +77,10 @@ public class MusicView {
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
         list.setCellFactory(param -> new MusicCell());
+/*        list.setOnMouseClicked(event -> {
+            MusicNode clickedSong = list.getSelectionModel().getSelectedItem();
+            System.out.println("clicked on " + clickedSong.getArtist());
+        });*/
         return list;
     }
 

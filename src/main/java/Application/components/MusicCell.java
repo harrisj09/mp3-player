@@ -1,13 +1,20 @@
-package Application;
+package Application.components;
 
-import Application.components.MusicNode;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.scene.control.ListCell;
 
 import java.io.IOException;
 
-class MusicCell extends ListCell<MusicNode> {
+public class MusicCell extends ListCell<MusicNode> {
+
+    /*
+    TODO
+        Store the cellfactory in this class
+
+        credit for the cell factory
+        https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
+     */
 
     public MusicCell() {
         super();
@@ -16,7 +23,7 @@ class MusicCell extends ListCell<MusicNode> {
     @Override
     protected void updateItem(MusicNode item, boolean empty) {
         super.updateItem(item, empty);
-        if (item != null && !empty) { // <== test for null item and empty parameter
+        if (item != null && !empty) {
             try {
                 setGraphic(item.getComponent());
             } catch (InvalidDataException | IOException | UnsupportedTagException e) {

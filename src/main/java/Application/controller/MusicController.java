@@ -1,14 +1,21 @@
-package Application;
+package Application.controller;
 
+import Application.model.MusicModel;
 import Application.components.MusicNode;
+
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.io.*;
-import java.util.Scanner;
 
 /**
  * Event listeners are handled here and this also acts as your musichandler and audioplayer
@@ -33,14 +40,11 @@ TODO
 public class MusicController {
 
     private final MusicModel musicModel;
+    private final AudioHandler audioHandler;
 
     public MusicController(MusicModel musicModel) {
         this.musicModel = musicModel;
-    }
-
-    @Deprecated
-    public MusicModel getMusicModel() {
-        return musicModel;
+        this.audioHandler = new AudioHandler();
     }
 
     public ObservableList<MusicNode> grabCenterContents() {
@@ -48,14 +52,38 @@ public class MusicController {
         return musicModel.getMusicList();
     }
 
+    public File getFile() {
+        return musicModel.getMp3File();
+    }
+
+    public void createFile() throws IOException {
+        musicModel.createFile();
+    }
+
     public void createSongsList() {
         ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
         try {
-            Scanner reader = new Scanner(musicModel.getMp3File());
             BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
             String filePath;
             while((filePath = br.readLine()) != null) {
-                musicList.add(new MusicNode(new File(filePath)));
+                // TODO Check if the path actually exists
+                File temp = new File(filePath);
+                if (temp.exists()) {
+                    MusicNode node = new MusicNode(new File(filePath));
+                    musicList.add(node);
+                    EventHandler<MouseEvent> addEvent = e -> {
+                        try {
+                            audioHandler.playSong(node);
+                        } catch (IOException | UnsupportedAudioFileException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    };
+                    node.getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
+                }
+                else {
+                    // delete the line from the file
+                    System.out.println("doesnt exist");
+                }
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
@@ -64,7 +92,7 @@ public class MusicController {
     }
 
     // this calls the Model to update the observable list
-    protected void addSong(File file) throws IOException {
+    public void addSong(File file) throws IOException {
         if(!isPlayableSong(file)) {
             JOptionPane.showMessageDialog(new JFrame(), "Incorrect file type");
         } else {
@@ -86,14 +114,30 @@ public class MusicController {
         // Add the file path to the text file
         FileWriter writer = new FileWriter(musicModel.getMp3File(), true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
-        if (isEmptyFile()) {
-            bufferedWriter.write(file.getAbsolutePath());
-        } else {
-            bufferedWriter.write("\n" + file.getAbsolutePath());
+        if (alreadyAdded(file.getAbsolutePath())) {
+            JOptionPane.showMessageDialog(new JFrame(), "Song already in library");
         }
-        bufferedWriter.flush();
-        bufferedWriter.close();
-        createSongsList();
+        else {
+            if (isEmptyFile()) {
+                bufferedWriter.write(file.getAbsolutePath());
+            } else {
+                bufferedWriter.write("\n" + file.getAbsolutePath());
+            }
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            createSongsList();
+        }
+    }
+
+    private boolean alreadyAdded(String file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
+        String filePath;
+        while((filePath = br.readLine()) != null) {
+            if(file.equals(filePath)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Create a new list, call setMusicList in Model

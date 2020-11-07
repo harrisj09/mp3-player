@@ -1,15 +1,17 @@
 package Application.components;
 
 import com.mpatric.mp3agic.*;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.text.Text;
-import Application.logic.MusicHandler;
+import javafx.stage.FileChooser;
 
 /**
  * https://github.com/mpatric/mp3agic
@@ -27,20 +29,45 @@ public class MusicNode {
     private String artist;
     private final Mp3File mp3File;
     private long lengthInSeconds;
+    private Button button = new Button("Play");
     private boolean isPlaying = false;
-    private MusicHandler musicHandler;
 
     /*
-    Make it so I dont need all of these exceptions
+    TODO
+        - Mp3agic doesn't read metadata use something else
      */
     public MusicNode(File file) throws InvalidDataException, IOException, UnsupportedTagException {
         this.file = file;
         mp3File = new Mp3File(file);
     }
 
+    public File getFile() {
+        return file;
+    }
+
     public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {
         handleMp3Type();
-        return new HBox(new Button("Play/Pause"), new Text(title), new Text(artist), new Text(convertTime()));
+        return new HBox(getButton(), new Text(artist + " - "), new Text(title), new Text(convertTime()));
+    }
+
+    public Button playStatusButton() {
+        Button button = new Button("Play");
+        // TODO have it play the song
+        EventHandler<MouseEvent> addEvent = e -> System.out.println("clicked me! " + lengthInSeconds);
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
+        return button;
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
     }
 
     private String convertTime() {
@@ -55,19 +82,14 @@ public class MusicNode {
     private void handleMp3Type() throws InvalidDataException, IOException, UnsupportedTagException {
         // I pray to god nothing has a customId
         Mp3File mp3File = new Mp3File(file);
-        if(mp3File.hasId3v1Tag()) {
-            ID3v1 id3v1Tag = mp3File.getId3v1Tag();
-            getMetaData(id3v1Tag);
-        }
-        if (mp3File.hasId3v2Tag()) {
-            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
-            getMetaData(id3v2Tag);
-        }
+        getMetaData();
     }
 
-    private void getMetaData(ID3v1 idTag) {
-        title = idTag.getTitle();
-        artist = idTag.getAlbum();
+    private void getMetaData() {
+        // All songs should be renamed to this format artist - song
+        String fileName = file.getName();
+        artist = fileName.substring(0, fileName.indexOf("-"));
+        title = fileName.substring(fileName.indexOf("-") + 1, fileName.lastIndexOf("."));
         lengthInSeconds = mp3File.getLengthInSeconds();
     }
 }
