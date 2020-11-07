@@ -10,9 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.io.*;
@@ -40,11 +38,11 @@ TODO
 public class MusicController {
 
     private final MusicModel musicModel;
-    private final AudioHandler audioHandler;
+    private final AudioController audioController;
 
     public MusicController(MusicModel musicModel) {
         this.musicModel = musicModel;
-        this.audioHandler = new AudioHandler();
+        this.audioController = new AudioController();
     }
 
     public ObservableList<MusicNode> grabCenterContents() {
@@ -72,11 +70,7 @@ public class MusicController {
                     MusicNode node = new MusicNode(new File(filePath));
                     musicList.add(node);
                     EventHandler<MouseEvent> addEvent = e -> {
-                        try {
-                            audioHandler.playSong(node);
-                        } catch (IOException | UnsupportedAudioFileException ioException) {
-                            ioException.printStackTrace();
-                        }
+                        audioController.playSong(node);
                     };
                     node.getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
                 }
@@ -143,5 +137,9 @@ public class MusicController {
     // Create a new list, call setMusicList in Model
     public boolean isEmptyFile() {
         return musicModel.getMp3File().length() == 0;
+    }
+
+    protected void getSong() {
+
     }
 }

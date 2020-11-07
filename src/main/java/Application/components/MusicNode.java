@@ -30,7 +30,7 @@ public class MusicNode {
     private final Mp3File mp3File;
     private long lengthInSeconds;
     private Button button = new Button("Play");
-    private boolean isPlaying = false;
+    private int id;
 
     /*
     TODO
@@ -52,7 +52,6 @@ public class MusicNode {
 
     public Button playStatusButton() {
         Button button = new Button("Play");
-        // TODO have it play the song
         EventHandler<MouseEvent> addEvent = e -> System.out.println("clicked me! " + lengthInSeconds);
         button.addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
         return button;
@@ -80,13 +79,11 @@ public class MusicNode {
     }
 
     private void handleMp3Type() throws InvalidDataException, IOException, UnsupportedTagException {
-        // I pray to god nothing has a customId
         Mp3File mp3File = new Mp3File(file);
         getMetaData();
     }
 
     private void getMetaData() {
-        // All songs should be renamed to this format artist - song
         String fileName = file.getName();
         artist = fileName.substring(0, fileName.indexOf("-"));
         title = fileName.substring(fileName.indexOf("-") + 1, fileName.lastIndexOf("."));

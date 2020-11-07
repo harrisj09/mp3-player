@@ -86,7 +86,7 @@ public class MusicView {
 
     public HBox createBottom() {
         Button previous = new Button("Previous");
-        ToggleButton playStatus = new ToggleButton("Play/Skip");
+        ToggleButton playStatus = new ToggleButton("Play");
         Button next = new Button("Next");
         HBox bottom = new HBox(previous, playStatus, next);
         bottom.setAlignment(Pos.CENTER);
