@@ -6,6 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 /**
  * Entry point of application
@@ -22,7 +27,18 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    public static void main(String[] args) {
+    /*
+    Request Songs
+    - click play
+    - send ID to server
+    - server sends back audio
+     */
+    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
+        HttpResponse<String> send = HttpClient.newBuilder()
+                .build()
+                .send(build, HttpResponse.BodyHandlers.ofString());
+        System.out.println(send.body());
         launch(args);
     }
 
