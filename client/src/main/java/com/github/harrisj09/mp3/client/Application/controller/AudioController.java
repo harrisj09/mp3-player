@@ -1,13 +1,14 @@
-package Application.controller;
+package com.github.harrisj09.mp3.client.Application.controller;
 
-import Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.Application.components.MusicNode;
 
 import java.io.File;
 
+import javafx.scene.control.Alert;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.StageStyle;
 
-import javax.swing.*;
 
 public class AudioController {
     private MusicNode currentlyPlaying;
@@ -17,7 +18,12 @@ public class AudioController {
     // https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
     public void playSong(MusicNode node, int listSize) {
         if (node.getId() > listSize - 1) {
-            JOptionPane.showMessageDialog(new JFrame(), "Out of bounds");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setTitle("Information");
+            alert.setHeaderText("Error");
+            alert.setContentText("Out of bounds");
+            alert.showAndWait();
         }
         else {
             if (mediaPlayer != null) {

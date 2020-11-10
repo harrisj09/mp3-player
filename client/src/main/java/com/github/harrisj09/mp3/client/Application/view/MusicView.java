@@ -1,8 +1,8 @@
-package Application.view;
+package com.github.harrisj09.mp3.client.Application.view;
 
-import Application.components.MusicCell;
-import Application.components.MusicNode;
-import Application.controller.MusicController;
+import com.github.harrisj09.mp3.client.Application.components.MusicCell;
+import com.github.harrisj09.mp3.client.Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.Application.controller.MusicController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;

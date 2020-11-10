@@ -1,6 +1,8 @@
-import Application.model.MusicModel;
-import Application.view.MusicView;
-import Application.controller.MusicController;
+package com.github.harrisj09.mp3.client;
+
+import com.github.harrisj09.mp3.client.Application.model.MusicModel;
+import com.github.harrisj09.mp3.client.Application.view.MusicView;
+import com.github.harrisj09.mp3.client.Application.controller.MusicController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -35,11 +37,11 @@ public class Main extends Application {
      */
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
         // TODO fix this for file processing https://www.baeldung.com/java-9-http-client
-        HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
+/*        HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
         HttpResponse<String> send = HttpClient.newBuilder()
                 .build()
                 .send(build, HttpResponse.BodyHandlers.ofString());
-        System.out.println(send.body());
+        System.out.println(send.body());*/
         launch(args);
     }
 

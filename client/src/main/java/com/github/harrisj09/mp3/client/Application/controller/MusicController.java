@@ -1,20 +1,16 @@
-package Application.controller;
+package com.github.harrisj09.mp3.client.Application.controller;
 
-import Application.model.MusicModel;
-import Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.Application.model.MusicModel;
+import com.github.harrisj09.mp3.client.Application.components.MusicNode;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
-
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.StageStyle;
 
-import javax.swing.*;
 import java.io.*;
 
 /**
@@ -136,7 +132,12 @@ public class MusicController {
     // this calls the Model to update the observable list
     public void addSong(File file) throws IOException {
         if(!isPlayableSong(file)) {
-            JOptionPane.showMessageDialog(new JFrame(), "Incorrect file type");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setTitle("Information");
+            alert.setHeaderText("Error");
+            alert.setContentText("Incorrect file type");
+            alert.showAndWait();
         } else {
             updateSongsFile(file);
         }
@@ -154,7 +155,12 @@ public class MusicController {
         FileWriter writer = new FileWriter(musicModel.getMp3File(), true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
         if (musicModel.alreadyAdded(file.getAbsolutePath())) {
-            JOptionPane.showMessageDialog(new JFrame(), "Song already in library");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setTitle("Information");
+            alert.setHeaderText("Error");
+            alert.setContentText("Song already in library");
+            alert.showAndWait();
         }
         else {
             if (isEmptyFile()) {

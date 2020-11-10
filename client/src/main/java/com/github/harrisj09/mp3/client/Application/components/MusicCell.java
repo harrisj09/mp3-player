@@ -1,4 +1,4 @@
-package Application.components;
+package com.github.harrisj09.mp3.client.Application.components;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;

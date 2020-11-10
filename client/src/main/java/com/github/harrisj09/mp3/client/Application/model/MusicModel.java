@@ -1,12 +1,10 @@
-package Application.model;
+package com.github.harrisj09.mp3.client.Application.model;
 
-import Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.Application.components.MusicNode;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 import java.io.BufferedReader;
 import java.io.File;
