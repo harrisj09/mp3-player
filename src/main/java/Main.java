@@ -34,6 +34,7 @@ public class Main extends Application {
     - server sends back audio
      */
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
+        // TODO fix this for file processing https://www.baeldung.com/java-9-http-client
         HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
         HttpResponse<String> send = HttpClient.newBuilder()
                 .build()

@@ -51,8 +51,7 @@ public class MusicController {
     }
 
     public HBox grabBottomContents() {
-        HBox bottom = new HBox(previousButton(), playStatusToggle(), skipButton());
-        return bottom;
+        return new HBox(previousButton(), playStatusToggle(), skipButton());
     }
 
     private Button previousButton() {
@@ -74,8 +73,7 @@ public class MusicController {
                 if (playStatusToggleText.equals("Play")) {
                     playStatusToggleText = "Pause";
                     audioController.resumeSong();
-                }
-                else {
+                } else {
                     playStatusToggleText = "Play";
                     audioController.pauseSong();
                 }
@@ -119,34 +117,23 @@ public class MusicController {
     }
 
     public void createSongsList() {
-        musicList = FXCollections.observableArrayList();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
-            String filePath;
-            int counter = 0;
-            // TODO Move this to Model
-            while((filePath = br.readLine()) != null) {
-                File temp = new File(filePath);
-                if (temp.exists()) {
-                    MusicNode node = new MusicNode(new File(filePath), counter);
-                    counter++;
-                    musicList.add(node);
-                    EventHandler<MouseEvent> playEvent = e -> {
-                        System.out.println(node.getId());
-                        changeToggleText("Pause");
-                        audioController.playSong(node, musicList.size());
-                    };
-                    node.getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
-                }
-            }
-        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
-            e.printStackTrace();
+        musicList = musicModel.grabSongs();
+        applyEventListeners();
+    }
+
+    private void applyEventListeners() {
+        for (int i = 0; i < musicList.size(); i++) {
+            int counter = i;
+            EventHandler<MouseEvent> playEvent = e -> {
+                System.out.println(musicList.get(counter).getId());
+                changeToggleText("Pause");
+                audioController.playSong(musicList.get(counter), musicList.size());
+            };
+            musicList.get(counter).getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
         }
-        musicModel.setMusicList(musicList);
     }
 
     // this calls the Model to update the observable list
-
     public void addSong(File file) throws IOException {
         if(!isPlayableSong(file)) {
             JOptionPane.showMessageDialog(new JFrame(), "Incorrect file type");
@@ -163,14 +150,10 @@ public class MusicController {
         return file.getName().substring(file.getName().lastIndexOf("."));
     }
 
-    // this creates a new observable list, goes through the file and generates a new list of music nodes
-    // calls setMusicList (name will be changed hopefully)
-
     public void updateSongsFile(File file) throws IOException {
-        // Add the file path to the text file
         FileWriter writer = new FileWriter(musicModel.getMp3File(), true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
-        if (alreadyAdded(file.getAbsolutePath())) {
+        if (musicModel.alreadyAdded(file.getAbsolutePath())) {
             JOptionPane.showMessageDialog(new JFrame(), "Song already in library");
         }
         else {
@@ -184,26 +167,8 @@ public class MusicController {
             createSongsList();
         }
     }
-    private boolean alreadyAdded(String file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(musicModel.getMp3File()));
-        String filePath;
-        while((filePath = br.readLine()) != null) {
-            if(file.equals(filePath)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    // Create a new list, call setMusicList in Model
     public boolean isEmptyFile() {
         return musicModel.getMp3File().length() == 0;
-    }
-    public AudioController getAudioController() {
-        return audioController;
-    }
-
-    public ObservableList<MusicNode> getMusicList() {
-        return musicList;
     }
 }
