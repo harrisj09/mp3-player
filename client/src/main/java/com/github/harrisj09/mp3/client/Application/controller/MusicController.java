@@ -33,6 +33,7 @@ public class MusicController {
     private final AudioController audioController;
     private ObservableList<MusicNode> musicList;
     private Button playStatus;
+    private ErrorFactory errorFactory = new ErrorFactory();
 
     private String playStatusToggleText = "Play";
 
@@ -134,10 +135,7 @@ public class MusicController {
         if(!isPlayableSong(file)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initStyle(StageStyle.UTILITY);
-            alert.setTitle("Information");
-            alert.setHeaderText("Error");
-            alert.setContentText("Incorrect file type");
-            alert.showAndWait();
+            errorFactory.createAlert(alert, "Information", "Error", "Incorrect File Type");
         } else {
             updateSongsFile(file);
         }
@@ -157,10 +155,7 @@ public class MusicController {
         if (musicModel.alreadyAdded(file.getAbsolutePath())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initStyle(StageStyle.UTILITY);
-            alert.setTitle("Information");
-            alert.setHeaderText("Error");
-            alert.setContentText("Song already in library");
-            alert.showAndWait();
+            errorFactory.createAlert(alert, "Information", "Error", "Song already in library");
         }
         else {
             if (isEmptyFile()) {

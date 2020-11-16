@@ -14,16 +14,14 @@ public class AudioController {
     private MusicNode currentlyPlaying;
     private Media media = null;
     private MediaPlayer mediaPlayer = null;
+    private ErrorFactory errorFactory = new ErrorFactory();
 
     // https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
     public void playSong(MusicNode node, int listSize) {
         if (node.getId() > listSize - 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initStyle(StageStyle.UTILITY);
-            alert.setTitle("Information");
-            alert.setHeaderText("Error");
-            alert.setContentText("Out of bounds");
-            alert.showAndWait();
+            errorFactory.createAlert(alert, "Information", "Error", "Out of bounds");
         }
         else {
             if (mediaPlayer != null) {

@@ -34,14 +34,23 @@ public class Main extends Application {
     - click play
     - send ID to server
     - server sends back audio
+
+    https://www.baeldung.com/java-9-http-client
+
+    https://www.baeldung.com/jackson-object-mapper-tutorial
+
+    look into
+    - serializable
      */
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
         // TODO fix this for file processing https://www.baeldung.com/java-9-http-client
-/*        HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
+        // Request from this
+        // use a scanner for this string to create the nodes by looking after each new line
+        HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/songs")).build();
         HttpResponse<String> send = HttpClient.newBuilder()
                 .build()
-                .send(build, HttpResponse.BodyHandlers.ofString());
-        System.out.println(send.body());*/
+                .send(build, HttpResponse.BodyHandlers.ofString()); // response handles the result of the request
+        System.out.println(send.body());
         launch(args);
     }
 

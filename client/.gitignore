@@ -1,3 +1,4 @@
 # Project exclude paths
 /target/
 mp3list.txt
+server-music-folder
