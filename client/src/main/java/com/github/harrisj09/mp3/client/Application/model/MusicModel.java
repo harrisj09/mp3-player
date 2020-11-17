@@ -13,13 +13,16 @@ import java.io.IOException;
 
 public class MusicModel {
     /**
-     * Store list of musicnodes
-     * store currentlyplaying
-     * store metadata
+     * This class will http request from the server
+     * so it can grab data from the server
+     *
+     * It also creates the folder used to store music
+     * downloaded from the server.
      */
 
     private ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
     private File mp3File = new File("mp3List.txt");
+    private File file;
 
     public ObservableList<MusicNode> getMusicList() {
         return musicList;
@@ -51,6 +54,13 @@ public class MusicModel {
 
     public void createFile() throws IOException {
         mp3File.createNewFile();
+    }
+
+    public void createClientDirectory() {
+        file = new File("client-music-folder");
+        // return file.toPath() this will be used in the music service
+        boolean createFolder = file.mkdir();
+        System.out.println(file.isDirectory());
     }
 
     public boolean alreadyAdded(String file) throws IOException {

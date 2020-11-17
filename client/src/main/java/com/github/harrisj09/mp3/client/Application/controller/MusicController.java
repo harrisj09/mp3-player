@@ -1,45 +1,29 @@
 package com.github.harrisj09.mp3.client.Application.controller;
 
+import com.github.harrisj09.mp3.client.Application.components.PlayButtonsComponent;
 import com.github.harrisj09.mp3.client.Application.model.MusicModel;
 import com.github.harrisj09.mp3.client.Application.components.MusicNode;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.StageStyle;
 
 import java.io.*;
 
-/**
- * Event listeners are handled here and this also acts as your musichandler and audioplayer
- *
- * Use this for list view
- * https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Cell.html
- *
- * Use this for handling selected item?
- * https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
- * getSelectionModel().getSelectedIndex() – Returns the index of the currently selected items in a single-selection mode
- * getSelectionModel().getSelectedItem() – Returns the currently selected item
- * getFocusModel().getFocusedIndex() – Returns the index of the currently focused item
- * getFocusModel().getFocusedItem() – Returns the currently focused item
- */
-
 public class MusicController {
 
     private final MusicModel musicModel;
     private final AudioController audioController;
+    private final PlayButtonsComponent playButtonsComponent;
+    private final ErrorFactory errorFactory = new ErrorFactory();
     private ObservableList<MusicNode> musicList;
-    private Button playStatus;
-    private ErrorFactory errorFactory = new ErrorFactory();
-
-    private String playStatusToggleText = "Play";
 
     public MusicController(MusicModel musicModel) {
         this.musicModel = musicModel;
         this.audioController = new AudioController();
+        musicModel.createClientDirectory();
+        playButtonsComponent = new PlayButtonsComponent(this, audioController);
     }
 
     public ObservableList<MusicNode> grabCenterContents() {
@@ -48,61 +32,7 @@ public class MusicController {
     }
 
     public HBox grabBottomContents() {
-        return new HBox(previousButton(), playStatusToggle(), skipButton());
-    }
-
-    private Button previousButton() {
-        Button previous = new Button("Previous");
-        EventHandler<MouseEvent> previousEvent = e -> {
-            if(canGoBack()) {
-                int nodeId = audioController.getCurrentlyPlaying().getId();
-                audioController.playSong(musicList.get(nodeId - 1), musicList.size());
-            }
-        };
-        previous.addEventFilter(MouseEvent.MOUSE_CLICKED, previousEvent);
-        return previous;
-    }
-
-    private Button playStatusToggle() {
-        playStatus = new Button(playStatusToggleText);
-        EventHandler<MouseEvent> toggleStatus = e -> {
-            if (audioController.getCurrentlyPlaying() != null) {
-                if (playStatusToggleText.equals("Play")) {
-                    playStatusToggleText = "Pause";
-                    audioController.resumeSong();
-                } else {
-                    playStatusToggleText = "Play";
-                    audioController.pauseSong();
-                }
-                changeToggleText(playStatusToggleText);
-            }
-        };
-        playStatus.addEventFilter(MouseEvent.MOUSE_CLICKED, toggleStatus);
-        return playStatus;
-    }
-
-    private void changeToggleText(String text) {
-        playStatus.setText(text);
-    }
-
-    private Button skipButton() {
-        Button skip = new Button("Skip");
-        EventHandler<MouseEvent> skipEvent = e -> {
-            if(canSkip()) {
-                int nodeId = audioController.getCurrentlyPlaying().getId();
-                audioController.playSong(musicList.get(nodeId + 1), musicList.size());
-            }
-        };
-        skip.addEventFilter(MouseEvent.MOUSE_CLICKED, skipEvent);
-        return skip;
-    }
-
-    private boolean canGoBack() {
-        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() > 0;
-    }
-
-    private boolean canSkip() {
-        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() < musicList.size() - 1;
+        return new HBox(playButtonsComponent.previousButton(), playButtonsComponent.playStatusToggle(), playButtonsComponent.skipButton());
     }
 
     public File getFile() {
@@ -115,22 +45,9 @@ public class MusicController {
 
     public void createSongsList() {
         musicList = musicModel.grabSongs();
-        applyEventListeners();
+        playButtonsComponent.applyEventListeners();
     }
 
-    private void applyEventListeners() {
-        for (int i = 0; i < musicList.size(); i++) {
-            int counter = i;
-            EventHandler<MouseEvent> playEvent = e -> {
-                System.out.println(musicList.get(counter).getId());
-                changeToggleText("Pause");
-                audioController.playSong(musicList.get(counter), musicList.size());
-            };
-            musicList.get(counter).getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
-        }
-    }
-
-    // this calls the Model to update the observable list
     public void addSong(File file) throws IOException {
         if(!isPlayableSong(file)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -140,7 +57,6 @@ public class MusicController {
             updateSongsFile(file);
         }
     }
-
     private boolean isPlayableSong(File file) {
         return fileType(file).equals(".mp3");
     }
@@ -171,5 +87,9 @@ public class MusicController {
 
     public boolean isEmptyFile() {
         return musicModel.getMp3File().length() == 0;
+    }
+
+    public ObservableList<MusicNode> getMusicList() {
+        return musicList;
     }
 }

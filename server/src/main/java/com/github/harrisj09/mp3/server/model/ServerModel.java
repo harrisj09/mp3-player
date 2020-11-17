@@ -6,6 +6,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ public class ServerModel {
 
     private HashMap<Integer, ServerMusicNode> musicMap = new HashMap<>();
 
+    // called after spring calls constructor
+    @PostConstruct
     public void createMusicMap() throws InvalidDataException, IOException, UnsupportedTagException {
         File file = createFile();
         int counter = 0;

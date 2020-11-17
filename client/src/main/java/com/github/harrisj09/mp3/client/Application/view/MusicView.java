@@ -51,7 +51,7 @@ public class MusicView {
             try {
                 musicController.addSong(song);
                 // TODO call a method (not createCenter) that applies the updated listview
-                borderPane.setCenter(updateCenter(song));
+                borderPane.setCenter(updateCenter());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -86,7 +86,7 @@ public class MusicView {
     }
 
     // Called after event listener is clicked
-    public Node updateCenter(File file) {
+    public Node updateCenter() {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);

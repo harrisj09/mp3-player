@@ -3,5 +3,8 @@ module mp3player {
     requires javafx.media;
     requires java.net.http;
     requires mp3agic;
+    requires com.fasterxml.jackson.databind;
+    requires lombok;
     opens com.github.harrisj09.mp3.client;
+    opens com.github.harrisj09.mp3.client.service;
 }
