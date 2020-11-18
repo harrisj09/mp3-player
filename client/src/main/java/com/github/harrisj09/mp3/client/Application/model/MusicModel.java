@@ -58,7 +58,6 @@ public class MusicModel {
 
     public void createClientDirectory() {
         file = new File("client-music-folder");
-        // return file.toPath() this will be used in the music service
         boolean createFolder = file.mkdir();
         System.out.println(file.isDirectory());
     }

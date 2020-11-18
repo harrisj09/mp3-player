@@ -10,6 +10,7 @@ public class ServerMusicNode {
      *
      * @author John Harris
      */
+
     private final String path;
     private final String artist;
     private final String song;
