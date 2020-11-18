@@ -1,6 +1,8 @@
 package com.github.harrisj09.mp3.client.Application.model;
 
 import com.github.harrisj09.mp3.client.Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.service.MusicService;
+import com.github.harrisj09.mp3.client.service.ServiceMusicNodeDto;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.collections.FXCollections;
@@ -10,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class MusicModel {
     /**
@@ -22,6 +26,7 @@ public class MusicModel {
 
     private ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
     private File mp3File = new File("mp3List.txt");
+    private List<ServiceMusicNodeDto> musicNodeDtoList = new MusicService(Paths.get("")).fetchMusicList();
     private File file;
 
     public ObservableList<MusicNode> getMusicList() {
