@@ -13,7 +13,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -21,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MusicView {
+
     /**
      * GUI is built here
      *
@@ -36,7 +36,7 @@ public class MusicView {
         borderPane = new BorderPane();
     }
 
-    public Parent getLayout() throws IOException {
+    public Parent getLayout() {
         borderPane.setTop(createTop());
         borderPane.setCenter(createCenter());
         borderPane.setBottom(createBottom());
@@ -50,7 +50,6 @@ public class MusicView {
             File song = new FileChooser().showOpenDialog(stage);
             try {
                 musicController.addSong(song);
-                // TODO call a method (not createCenter) that applies the updated listview
                 borderPane.setCenter(updateCenter());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -61,17 +60,7 @@ public class MusicView {
         return top;
     }
 
-    public Node createCenter() throws IOException {
-        // If file doesn't exist
-        if (!musicController.getFile().exists()) {
-            musicController.createFile();
-            return new HBox(new Text("Music List is Empty :("));
-        }
-        // If file is empty
-        if(musicController.isEmptyFile()) {
-            return new HBox(new Text("Music List is Empty :("));
-        }
-        // Theres a method called setCellFactory for ListView
+    public Node createCenter() {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
@@ -85,7 +74,6 @@ public class MusicView {
         return bottom;
     }
 
-    // Called after event listener is clicked
     public Node updateCenter() {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();

@@ -30,8 +30,9 @@ public class MusicNode {
     private int id;
     private Button button = new Button("Play");
 
-    public MusicNode(String path, String title, String artist, long lengthInSeconds, int id) {
-        this.serverPath = path;
+    public MusicNode(String serverPath, String title, String artist, long lengthInSeconds, int id) {
+        this.clientPath = clientPath;
+        this.serverPath = serverPath;
         this.artist = title;
         this.song = artist;
         this.lengthInSeconds = lengthInSeconds;

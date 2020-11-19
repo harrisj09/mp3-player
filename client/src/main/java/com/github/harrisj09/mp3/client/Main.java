@@ -25,12 +25,11 @@ public class Main extends Application {
     public static void main(String[] args) {
         // this is important
         // TODO move this to musicModel
-        System.out.println(new MusicService(Paths.get("")).fetchMusicList());
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         MusicModel model = new MusicModel();
         MusicController controller = new MusicController(model);
         MusicView view = new MusicView(controller, primaryStage);

@@ -48,6 +48,7 @@ public class MusicController {
         playButtonsComponent.applyEventListeners();
     }
 
+    // TODO Delete this
     public void addSong(File file) throws IOException {
         if(!isPlayableSong(file)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -57,6 +58,7 @@ public class MusicController {
             updateSongsFile(file);
         }
     }
+
     private boolean isPlayableSong(File file) {
         return fileType(file).equals(".mp3");
     }
@@ -65,6 +67,7 @@ public class MusicController {
         return file.getName().substring(file.getName().lastIndexOf("."));
     }
 
+    // TODO Delete this
     public void updateSongsFile(File file) throws IOException {
         FileWriter writer = new FileWriter(musicModel.getMp3File(), true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);

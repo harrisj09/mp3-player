@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -42,6 +41,7 @@ public class PlayButtonsComponent {
         return playStatus;
     }
 
+    // TODO Fix this to handle non downloaded files
     public Button previousButton() {
         Button previous = new Button("Previous");
         EventHandler<MouseEvent> previousEvent = e -> {
@@ -54,6 +54,7 @@ public class PlayButtonsComponent {
         return previous;
     }
 
+    // TODO Fix this to handle non downloaded files
     public Button skipButton() {
         Button skip = new Button("Skip");
         EventHandler<MouseEvent> skipEvent = e -> {
@@ -70,18 +71,20 @@ public class PlayButtonsComponent {
         for (int i = 0; i <  musicController.getMusicList().size(); i++) {
             int counter = i;
             EventHandler<MouseEvent> playEvent = e -> {
-                System.out.println(musicController.getMusicList().get(counter).getLengthInSeconds());
                 if (musicController.getMusicList().get(counter).getClientPath() == null) {
-                    // fetchsong
                     System.out.println("Downloading song");
                     Path song = new MusicService(Paths.get("")).fetchMusicFile(musicController.getMusicList().get(counter), musicController.getMusicList().get(counter).getId());
-                    //fetchMusicFile(musicController.getMusicList().get(counter), musicController.getMusicList().get(counter).getId());
+                    musicController.getMusicList().get(counter).setClientPath(song.toAbsolutePath().toString());
                 }
-                File folder = new File("client-music-folder");
-                //audioController.playSong( musicController.getMusicList().get(counter),  musicController.getMusicList().size());
+                audioController.playSong( musicController.getMusicList().get(counter),  musicController.getMusicList().size());
             };
             musicController.getMusicList().get(counter).getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
         }
+    }
+
+    // TODO use this with making prev and skip work
+    public boolean isSongInLibrary(int counter) {
+        return musicController.getMusicList().get(counter).getClientPath() == null;
     }
 
     private void changeToggleText(String text) {

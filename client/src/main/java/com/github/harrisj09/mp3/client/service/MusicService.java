@@ -22,7 +22,6 @@ public class MusicService {
     use this to request from server
      */
 
-
     private final Path musicPath;
 
     public List<ServiceMusicNodeDto> fetchMusicList() {
@@ -44,14 +43,14 @@ public class MusicService {
     // https://stackoverflow.com/questions/19733612/how-to-download-an-httpresponse-into-a-file
     // https://stackabuse.com/how-to-download-a-file-from-a-url-in-java/
     public Path fetchMusicFile(MusicNode nodeDto, int id) {
-        String fileName = nodeDto.getArtist() + " - " + nodeDto.getSong() + ".mp3";
+        String fileName = nodeDto.getArtist() + " - " + nodeDto.getSong();
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://localhost:8080/download/" + id))
-                    .headers("Content-Type", "text/plain;charset=UTF-8")
-                    .POST((HttpRequest.BodyPublisher) HttpResponse.BodyHandlers.ofFile(
-                            Paths.get("client-music-folder/"  + fileName))).build();
-            return Paths.get("client-music-folder/" + fileName);
+            Path targetFile = Paths.get("client-music-folder/" + fileName);
+            HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/download/" + id)).build();
+            HttpResponse<Path> send = HttpClient.newBuilder()
+                    .build()
+                    .send(build, HttpResponse.BodyHandlers.ofFile(targetFile));
+            return send.body();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
