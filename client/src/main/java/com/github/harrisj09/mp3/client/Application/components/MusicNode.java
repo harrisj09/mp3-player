@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.text.Text;
@@ -23,22 +22,33 @@ import javafx.scene.text.Text;
  * @author John Harris
  */
 public class MusicNode {
-    private File file;
-    private String title;
+    private String serverPath;
+    private String clientPath;
     private String artist;
-    private final Mp3File mp3File;
+    private String song;
     private long lengthInSeconds;
-    private Button button = new Button("Play");
     private int id;
+    private Button button = new Button("Play");
 
-    public MusicNode(File file, int id) throws InvalidDataException, IOException, UnsupportedTagException {
-        this.file = file;
+    public MusicNode(String path, String title, String artist, long lengthInSeconds, int id) {
+        this.serverPath = path;
+        this.artist = title;
+        this.song = artist;
+        this.lengthInSeconds = lengthInSeconds;
         this.id = id;
-        mp3File = new Mp3File(file);
+        clientPath = null;
     }
 
-    public File getFile() {
-        return file;
+    public String getServerPath() {
+        return serverPath;
+    }
+
+    public String getClientPath() {
+        return clientPath;
+    }
+
+    public void setClientPath(String clientPath) {
+        this.clientPath = clientPath;
     }
 
     public int getId() {
@@ -46,8 +56,7 @@ public class MusicNode {
     }
 
     public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {
-        handleMp3Type();
-        return new HBox(getButton(), new Text(artist + " - "), new Text(title), new Text(convertTime()));
+        return new HBox(getButton(), new Text(song + " - "), new Text(artist), new Text(convertTime()));
     }
 
     public Button playStatusButton() {
@@ -61,12 +70,16 @@ public class MusicNode {
         return button;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getArtist() {
         return artist;
+    }
+
+    public String getSong() {
+        return song;
+    }
+
+    public String getLengthInSeconds() {
+        return convertTime();
     }
 
     private String convertTime() {
@@ -76,17 +89,5 @@ public class MusicNode {
             return minutes + ":0" + seconds;
         }
         return minutes + ":" + seconds;
-    }
-
-    private void handleMp3Type() throws InvalidDataException, IOException, UnsupportedTagException {
-        Mp3File mp3File = new Mp3File(file);
-        getMetaData();
-    }
-
-    private void getMetaData() {
-        String fileName = file.getName();
-        artist = fileName.substring(0, fileName.indexOf("-"));
-        title = fileName.substring(fileName.indexOf("-") + 1, fileName.lastIndexOf("."));
-        lengthInSeconds = mp3File.getLengthInSeconds();
     }
 }

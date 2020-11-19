@@ -3,8 +3,6 @@ package com.github.harrisj09.mp3.client.Application.model;
 import com.github.harrisj09.mp3.client.Application.components.MusicNode;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import com.github.harrisj09.mp3.client.service.ServiceMusicNodeDto;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -39,20 +37,15 @@ public class MusicModel {
 
     public ObservableList<MusicNode> grabSongs() {
         musicList = FXCollections.observableArrayList();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(getMp3File()));
-            String filePath;
-            int counter = 0;
-            while((filePath = br.readLine()) != null) {
-                File temp = new File(filePath);
-                if (temp.exists()) {
-                    MusicNode node = new MusicNode(new File(filePath), counter);
-                    counter++;
-                    musicList.add(node);
-                }
-            }
-        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
-            e.printStackTrace();
+        int counter = 0;
+        while(counter < musicNodeDtoList.size()) {
+            String artist = musicNodeDtoList.get(counter).getArtist();
+            String song = musicNodeDtoList.get(counter).getSong();
+            long time = musicNodeDtoList.get(counter).getLength();
+            int id = musicNodeDtoList.get(counter).getId();
+            MusicNode node = new MusicNode(null, artist, song, time, id);
+            musicList.add(node);
+            counter++;
         }
         return musicList;
     }

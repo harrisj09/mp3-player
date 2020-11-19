@@ -28,7 +28,7 @@ public class AudioController {
                 pauseSong();
             }
             currentlyPlaying = node;
-            String filePath = node.getFile().getAbsolutePath();
+            String filePath = node.getClientPath();
             media = new Media(new File(filePath).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();

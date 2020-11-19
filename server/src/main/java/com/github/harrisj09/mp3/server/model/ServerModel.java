@@ -17,7 +17,6 @@ public class ServerModel {
 
     private HashMap<Integer, ServerMusicNode> musicMap = new HashMap<>();
 
-    // called after spring calls constructor
     @PostConstruct
     public void createMusicMap() throws InvalidDataException, IOException, UnsupportedTagException {
         File file = createFile();

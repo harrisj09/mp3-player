@@ -2,9 +2,14 @@ package com.github.harrisj09.mp3.client.Application.components;
 
 import com.github.harrisj09.mp3.client.Application.controller.AudioController;
 import com.github.harrisj09.mp3.client.Application.controller.MusicController;
+import com.github.harrisj09.mp3.client.service.MusicService;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PlayButtonsComponent {
 
@@ -65,9 +70,15 @@ public class PlayButtonsComponent {
         for (int i = 0; i <  musicController.getMusicList().size(); i++) {
             int counter = i;
             EventHandler<MouseEvent> playEvent = e -> {
-                System.out.println( musicController.getMusicList().get(counter).getId());
-                changeToggleText("Pause");
-                audioController.playSong( musicController.getMusicList().get(counter),  musicController.getMusicList().size());
+                System.out.println(musicController.getMusicList().get(counter).getLengthInSeconds());
+                if (musicController.getMusicList().get(counter).getClientPath() == null) {
+                    // fetchsong
+                    System.out.println("Downloading song");
+                    Path song = new MusicService(Paths.get("")).fetchMusicFile(musicController.getMusicList().get(counter), musicController.getMusicList().get(counter).getId());
+                    //fetchMusicFile(musicController.getMusicList().get(counter), musicController.getMusicList().get(counter).getId());
+                }
+                File folder = new File("client-music-folder");
+                //audioController.playSong( musicController.getMusicList().get(counter),  musicController.getMusicList().size());
             };
             musicController.getMusicList().get(counter).getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
         }
