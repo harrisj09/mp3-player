@@ -34,7 +34,6 @@ public class ServerController {
         return serverMusicNodes;
     }
 
-    // myStream.transferTo(response.getOutputStream()
     @RequestMapping(value="download/{id}", method=RequestMethod.GET)
     public void getDownload(HttpServletResponse response, @PathVariable String id) throws IOException {
         ServerMusicNode node = serverModel.getMusicMap().get(Integer.parseInt(id));

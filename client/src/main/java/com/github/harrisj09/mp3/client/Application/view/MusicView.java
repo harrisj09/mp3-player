@@ -37,7 +37,6 @@ public class MusicView {
     }
 
     public Parent getLayout() {
-        borderPane.setTop(createTop());
         borderPane.setCenter(createCenter());
         borderPane.setBottom(createBottom());
         return borderPane;

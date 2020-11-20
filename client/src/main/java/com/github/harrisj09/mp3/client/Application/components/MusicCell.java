@@ -24,11 +24,7 @@ public class MusicCell extends ListCell<MusicNode> {
     protected void updateItem(MusicNode item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null && !empty) {
-            try {
-                setGraphic(item.getComponent());
-            } catch (InvalidDataException | IOException | UnsupportedTagException e) {
-                e.printStackTrace();
-            }
+            setGraphic(item.getComponent());
         }
     }
 }

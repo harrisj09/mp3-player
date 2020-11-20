@@ -23,6 +23,7 @@ public class ServerModel {
         int counter = 0;
         for (final File fileEntry : Objects.requireNonNull(file.listFiles())) {
             String fileName = fileEntry.getName();
+            System.out.println(fileName);
             String artist = fileName.substring(0, fileName.indexOf("-") - 1);
             String song = fileName.substring(fileName.indexOf("-") + 2);
             Mp3File mp3File = new Mp3File(fileEntry);

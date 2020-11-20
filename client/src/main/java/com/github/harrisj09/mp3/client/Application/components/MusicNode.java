@@ -31,17 +31,12 @@ public class MusicNode {
     private Button button = new Button("Play");
 
     public MusicNode(String serverPath, String title, String artist, long lengthInSeconds, int id) {
-        this.clientPath = clientPath;
         this.serverPath = serverPath;
         this.artist = title;
         this.song = artist;
         this.lengthInSeconds = lengthInSeconds;
         this.id = id;
         clientPath = null;
-    }
-
-    public String getServerPath() {
-        return serverPath;
     }
 
     public String getClientPath() {
@@ -56,15 +51,8 @@ public class MusicNode {
         return id;
     }
 
-    public Node getComponent() throws InvalidDataException, IOException, UnsupportedTagException {
+    public Node getComponent() {
         return new HBox(getButton(), new Text(song + " - "), new Text(artist), new Text(convertTime()));
-    }
-
-    public Button playStatusButton() {
-        Button button = new Button("Play");
-        EventHandler<MouseEvent> addEvent = e -> System.out.println("clicked me! " + lengthInSeconds);
-        button.addEventFilter(MouseEvent.MOUSE_CLICKED, addEvent);
-        return button;
     }
 
     public Button getButton() {
@@ -77,10 +65,6 @@ public class MusicNode {
 
     public String getSong() {
         return song;
-    }
-
-    public String getLengthInSeconds() {
-        return convertTime();
     }
 
     private String convertTime() {
