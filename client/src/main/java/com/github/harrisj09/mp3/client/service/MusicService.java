@@ -17,11 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MusicService {
 
-    /*
-    http://zetcode.com/java/getpostrequest/
-    use this to request from server
-     */
-
     private final Path musicPath;
 
     public List<ServiceMusicNodeDto> fetchMusicList() {

@@ -2,6 +2,7 @@ package com.github.harrisj09.mp3.client.Application.components;
 
 import com.github.harrisj09.mp3.client.Application.controller.AudioController;
 import com.github.harrisj09.mp3.client.Application.controller.MusicController;
+import com.github.harrisj09.mp3.client.Application.model.queue.MusicQueueNode;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -35,6 +36,13 @@ public class PlayButtonsComponent {
                     audioController.pauseSong();
                 }
                 changeToggleText(playStatusToggleText);
+            } else {
+                if(musicController.getMusicQueue().getBack() != null) {
+                    MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
+                    int id = queueNode.getSong().getId();
+                    downloadSong(id);
+                    audioController.playQueue(musicController.getMusicQueue().getBack());
+                }
             }
         };
         playStatus.addEventFilter(MouseEvent.MOUSE_CLICKED, toggleStatus);
@@ -50,7 +58,7 @@ public class PlayButtonsComponent {
                 if (!songIsInLibrary(nodeId - 1)) {
                     downloadSong(nodeId - 1);
                 }
-                audioController.playSong(musicController.getMusicList().get(nodeId - 1),  musicController.getMusicList().size());
+                audioController.playSingleSong(musicController.getMusicList().get(nodeId - 1));
             }
         };
         previous.addEventFilter(MouseEvent.MOUSE_CLICKED, previousEvent);
@@ -61,12 +69,21 @@ public class PlayButtonsComponent {
     public Button skipButton() {
         Button skip = new Button("Skip");
         EventHandler<MouseEvent> skipEvent = e -> {
-            if(canSkip()) {
-                int nodeId = audioController.getCurrentlyPlaying().getId();
-                if (!songIsInLibrary(nodeId + 1)) {
-                    downloadSong(nodeId + 1);
+            if(audioController.isInQueue() && musicController.getMusicQueue().getBack().getNext() != null) {
+                musicController.getMusicQueue().dequeue();
+                audioController.pauseSong();
+                MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
+                int id = queueNode.getSong().getId();
+                downloadSong(id);
+                audioController.playQueue(queueNode);
+            } else {
+                if(canSkip()) {
+                    int nodeId = audioController.getCurrentlyPlaying().getId();
+                    if (!songIsInLibrary(nodeId + 1)) {
+                        downloadSong(nodeId + 1);
+                    }
+                    audioController.playSingleSong(musicController.getMusicList().get(nodeId + 1));
                 }
-                audioController.playSong(musicController.getMusicList().get(nodeId + 1), musicController.getMusicList().size());
             }
         };
         skip.addEventFilter(MouseEvent.MOUSE_CLICKED, skipEvent);
@@ -80,14 +97,15 @@ public class PlayButtonsComponent {
                 if (!songIsInLibrary(counter)) {
                     downloadSong(counter);
                 }
-                audioController.playSong( musicController.getMusicList().get(counter),  musicController.getMusicList().size());
+                audioController.playSingleSong( musicController.getMusicList().get(counter));
             };
-            musicController.getMusicList().get(counter).getButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
+            EventHandler<MouseEvent> queueEvent = e -> {
+                System.out.println("Added " + musicController.getMusicList().get(counter).getArtist());
+                musicController.getMusicQueue().enqueue(musicController.getMusicList().get(counter));
+            };
+            musicController.getMusicList().get(counter).getPlayButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
+            musicController.getMusicList().get(counter).getAddToQueue().addEventFilter(MouseEvent.MOUSE_CLICKED, queueEvent);
         }
-    }
-
-    public String findFile() {
-        return null;
     }
 
     public void downloadSong(int id) {

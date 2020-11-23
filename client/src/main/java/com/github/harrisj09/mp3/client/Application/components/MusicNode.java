@@ -1,14 +1,8 @@
 package com.github.harrisj09.mp3.client.Application.components;
 
-import com.mpatric.mp3agic.*;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
-import java.io.IOException;
-
 import javafx.scene.text.Text;
 
 /**
@@ -28,7 +22,8 @@ public class MusicNode {
     private String song;
     private long lengthInSeconds;
     private int id;
-    private Button button = new Button("Play");
+    private Button playButton = new Button("Play");
+    private Button addToQueue = new Button("Add");
 
     public MusicNode(String serverPath, String title, String artist, long lengthInSeconds, int id) {
         this.serverPath = serverPath;
@@ -52,11 +47,15 @@ public class MusicNode {
     }
 
     public Node getComponent() {
-        return new HBox(getButton(), new Text(song + " - "), new Text(artist), new Text(convertTime()));
+        return new HBox(getAddToQueue(), getPlayButton(), new Text(song + " - "), new Text(artist), new Text(convertTime()));
     }
 
-    public Button getButton() {
-        return button;
+    public Button getPlayButton() {
+        return playButton;
+    }
+
+    public Button getAddToQueue() {
+        return addToQueue;
     }
 
     public String getArtist() {
