@@ -39,8 +39,6 @@ public class PlayButtonsComponent {
             } else {
                 if(musicController.getMusicQueue().getBack() != null) {
                     MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
-                    int id = queueNode.getSong().getId();
-                    downloadSong(id);
                     audioController.playQueue(musicController.getMusicQueue().getBack());
                 }
             }
@@ -73,8 +71,6 @@ public class PlayButtonsComponent {
                 musicController.getMusicQueue().dequeue();
                 audioController.pauseSong();
                 MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
-                int id = queueNode.getSong().getId();
-                downloadSong(id);
                 audioController.playQueue(queueNode);
             } else {
                 if(canSkip()) {
