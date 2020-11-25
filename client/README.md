@@ -11,6 +11,7 @@ I plan on having this be able to stream music to the client through a raspberry 
 
 
 # Functionality 
-- [X] Write the press release
-- [ ] Update the website
-- [ ] Contact the media
+- [ ] Limit dependencies for MusicModel
+- [ ] change client and server path to Path
+- [ ] MusicCell should store the UI of each music node
+- [ ] MusicNode should only store data (metadata)

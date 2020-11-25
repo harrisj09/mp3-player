@@ -38,12 +38,11 @@ public class MusicModel {
         int counter = 0;
         while(counter < musicNodeDtoList.size()) {
             String clientPath = findClientPath(musicNodeDtoList.get(counter));
-            String serverPath = musicNodeDtoList.get(counter).getPath();
             String artist = musicNodeDtoList.get(counter).getArtist();
             String song = musicNodeDtoList.get(counter).getSong();
             long time = musicNodeDtoList.get(counter).getLength();
             int id = musicNodeDtoList.get(counter).getId();
-            MusicNode node = new MusicNode(serverPath, artist, song, time, id);
+            MusicNode node = new MusicNode(clientPath, artist, song, time, id);
             musicList.add(node);
             counter++;
         }

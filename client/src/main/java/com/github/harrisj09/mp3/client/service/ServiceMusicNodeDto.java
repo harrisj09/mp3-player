@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class ServiceMusicNodeDto implements Serializable {
-    private String path;
     private String artist;
     private String song;
     private int id;

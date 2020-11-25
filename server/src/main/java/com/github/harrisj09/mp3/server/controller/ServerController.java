@@ -2,6 +2,7 @@ package com.github.harrisj09.mp3.server.controller;
 
 import com.github.harrisj09.mp3.server.model.ServerModel;
 import com.github.harrisj09.mp3.server.nodes.ServerMusicNode;
+import com.github.harrisj09.mp3.server.nodes.ServerMusicNodeDto;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @RestController
 public class ServerController {
@@ -24,14 +26,12 @@ public class ServerController {
     }
 
     @GetMapping("/songs")
-    public Collection<ServerMusicNode> getMusicList() {
-        HashMap<Integer, ServerMusicNode> musicNodeHashMap = serverModel.getMusicMap();
-        int size = musicNodeHashMap.size();
-        Collection<ServerMusicNode> serverMusicNodes = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            serverMusicNodes.add(musicNodeHashMap.get(i));
-        }
-        return serverMusicNodes;
+    public Collection<ServerMusicNodeDto> getMusicList() {
+        return serverModel.getMusicMap().values().stream().map(ServerController::convertToDto).collect(Collectors.toList());
+    }
+
+    private static ServerMusicNodeDto convertToDto(ServerMusicNode serverMusicNode) {
+        return new ServerMusicNodeDto(serverMusicNode.getId(), serverMusicNode.getArtist(), serverMusicNode.getSong(), serverMusicNode.getLength());
     }
 
     @RequestMapping(value="download/{id}", method=RequestMethod.GET)

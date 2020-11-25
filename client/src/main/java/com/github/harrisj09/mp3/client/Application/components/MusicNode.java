@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
  * @author John Harris
  */
 public class MusicNode {
-    private String serverPath;
     private String clientPath;
     private String artist;
     private String song;
@@ -25,13 +24,12 @@ public class MusicNode {
     private Button playButton = new Button("Play");
     private Button addToQueue = new Button("Add");
 
-    public MusicNode(String serverPath, String title, String artist, long lengthInSeconds, int id) {
-        this.serverPath = serverPath;
+    public MusicNode(String clientPath, String title, String artist, long lengthInSeconds, int id) {
+        this.clientPath = clientPath;
         this.artist = title;
         this.song = artist;
         this.lengthInSeconds = lengthInSeconds;
         this.id = id;
-        clientPath = null;
     }
 
     public String getClientPath() {
