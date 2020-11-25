@@ -1,7 +1,8 @@
-package com.github.harrisj09.mp3.client.Application.model;
+package com.github.harrisj09.mp3.client.application.model;
 
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
-import com.github.harrisj09.mp3.client.Application.model.queue.MusicQueue;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.model.queue.MusicQueue;
+import com.github.harrisj09.mp3.client.domain.Song;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import com.github.harrisj09.mp3.client.service.ServiceMusicNodeDto;
 import javafx.collections.FXCollections;
@@ -9,7 +10,9 @@ import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MusicModel {
     /**
@@ -34,19 +37,18 @@ public class MusicModel {
     }
 
     public ObservableList<MusicNode> grabSongs() {
-        musicList = FXCollections.observableArrayList();
-        int counter = 0;
-        while(counter < musicNodeDtoList.size()) {
-            String clientPath = findClientPath(musicNodeDtoList.get(counter));
-            String artist = musicNodeDtoList.get(counter).getArtist();
-            String song = musicNodeDtoList.get(counter).getSong();
-            long time = musicNodeDtoList.get(counter).getLength();
-            int id = musicNodeDtoList.get(counter).getId();
-            MusicNode node = new MusicNode(clientPath, artist, song, time, id);
-            musicList.add(node);
-            counter++;
-        }
+        musicList = musicNodeDtoList.stream().map(this::convertFromDtoToMusicNode).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return musicList;
+    }
+
+    private MusicNode convertFromDtoToMusicNode(ServiceMusicNodeDto nodeDto) {
+        String clientPath = findClientPath(nodeDto);
+        String artist = nodeDto.getArtist();
+        String name = nodeDto.getSong();
+        long time = nodeDto.getLength();
+        int id = nodeDto.getId();
+        Song song = new Song(id, artist, name, Duration.ofSeconds(time));
+        return new MusicNode(song, clientPath);
     }
 
     public MusicQueue getMusicQueue() {

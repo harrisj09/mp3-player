@@ -1,8 +1,8 @@
 package com.github.harrisj09.mp3.client;
 
-import com.github.harrisj09.mp3.client.Application.model.MusicModel;
-import com.github.harrisj09.mp3.client.Application.view.MusicView;
-import com.github.harrisj09.mp3.client.Application.controller.MusicController;
+import com.github.harrisj09.mp3.client.application.model.MusicModel;
+import com.github.harrisj09.mp3.client.application.view.MusicView;
+import com.github.harrisj09.mp3.client.application.controller.MusicController;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

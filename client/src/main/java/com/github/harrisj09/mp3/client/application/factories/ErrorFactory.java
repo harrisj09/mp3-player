@@ -1,4 +1,4 @@
-package com.github.harrisj09.mp3.client.Application.factories;
+package com.github.harrisj09.mp3.client.application.factories;
 
 import javafx.scene.control.Alert;
 

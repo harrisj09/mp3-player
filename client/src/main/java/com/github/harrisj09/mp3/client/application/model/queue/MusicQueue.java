@@ -1,6 +1,6 @@
-package com.github.harrisj09.mp3.client.Application.model.queue;
+package com.github.harrisj09.mp3.client.application.model.queue;
 
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
 
 public class MusicQueue {
 

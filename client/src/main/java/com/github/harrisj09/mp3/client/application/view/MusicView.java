@@ -1,8 +1,8 @@
-package com.github.harrisj09.mp3.client.Application.view;
+package com.github.harrisj09.mp3.client.application.view;
 
-import com.github.harrisj09.mp3.client.Application.components.MusicCell;
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
-import com.github.harrisj09.mp3.client.Application.controller.MusicController;
+import com.github.harrisj09.mp3.client.application.components.MusicCell;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.controller.MusicController;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

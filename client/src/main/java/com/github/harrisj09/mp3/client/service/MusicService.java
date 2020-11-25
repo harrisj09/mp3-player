@@ -2,7 +2,7 @@ package com.github.harrisj09.mp3.client.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
@@ -38,7 +38,7 @@ public class MusicService {
     // https://stackoverflow.com/questions/19733612/how-to-download-an-httpresponse-into-a-file
     // https://stackabuse.com/how-to-download-a-file-from-a-url-in-java/
     public Path fetchMusicFile(MusicNode nodeDto, int id) {
-        String fileName = nodeDto.getArtist() + " - " + nodeDto.getSong();
+        String fileName = nodeDto.getSong().getArtist() + " - " + nodeDto.getSong().getName();
         try {
             Path targetFile = Paths.get("client-music-folder/" + fileName);
             HttpRequest build = HttpRequest.newBuilder().GET().uri(new URI("http://localhost:8080/download/" + id)).build();

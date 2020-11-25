@@ -1,9 +1,9 @@
-package com.github.harrisj09.mp3.client.Application.controller;
+package com.github.harrisj09.mp3.client.application.controller;
 
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
-import com.github.harrisj09.mp3.client.Application.components.PlayButtonsComponent;
-import com.github.harrisj09.mp3.client.Application.model.MusicModel;
-import com.github.harrisj09.mp3.client.Application.model.queue.MusicQueue;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.components.PlayButtonsComponent;
+import com.github.harrisj09.mp3.client.application.model.MusicModel;
+import com.github.harrisj09.mp3.client.application.model.queue.MusicQueue;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 

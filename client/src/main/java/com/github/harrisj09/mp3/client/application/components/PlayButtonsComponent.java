@@ -1,8 +1,8 @@
-package com.github.harrisj09.mp3.client.Application.components;
+package com.github.harrisj09.mp3.client.application.components;
 
-import com.github.harrisj09.mp3.client.Application.controller.AudioController;
-import com.github.harrisj09.mp3.client.Application.controller.MusicController;
-import com.github.harrisj09.mp3.client.Application.model.queue.MusicQueueNode;
+import com.github.harrisj09.mp3.client.application.controller.AudioController;
+import com.github.harrisj09.mp3.client.application.controller.MusicController;
+import com.github.harrisj09.mp3.client.application.model.queue.MusicQueueNode;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -52,7 +52,7 @@ public class PlayButtonsComponent {
         Button previous = new Button("Previous");
         EventHandler<MouseEvent> previousEvent = e -> {
             if(canGoBack()) {
-                int nodeId = audioController.getCurrentlyPlaying().getId();
+                int nodeId = audioController.getCurrentlyPlaying().getSong().getId();
                 if (!songIsInLibrary(nodeId - 1)) {
                     downloadSong(nodeId - 1);
                 }
@@ -74,7 +74,7 @@ public class PlayButtonsComponent {
                 audioController.playQueue(queueNode);
             } else {
                 if(canSkip()) {
-                    int nodeId = audioController.getCurrentlyPlaying().getId();
+                    int nodeId = audioController.getCurrentlyPlaying().getSong().getId();
                     if (!songIsInLibrary(nodeId + 1)) {
                         downloadSong(nodeId + 1);
                     }
@@ -96,7 +96,7 @@ public class PlayButtonsComponent {
                 audioController.playSingleSong( musicController.getMusicList().get(counter));
             };
             EventHandler<MouseEvent> queueEvent = e -> {
-                System.out.println("Added " + musicController.getMusicList().get(counter).getArtist());
+                System.out.println("Added " + musicController.getMusicList().get(counter).getSong().getArtist());
                 musicController.getMusicQueue().enqueue(musicController.getMusicList().get(counter));
             };
             musicController.getMusicList().get(counter).getPlayButton().addEventFilter(MouseEvent.MOUSE_CLICKED, playEvent);
@@ -106,7 +106,7 @@ public class PlayButtonsComponent {
 
     public void downloadSong(int id) {
         System.out.println("Downloading song");
-        Path song = new MusicService(Paths.get("")).fetchMusicFile(musicController.getMusicList().get(id), musicController.getMusicList().get(id).getId());
+        Path song = new MusicService(Paths.get("")).fetchMusicFile(musicController.getMusicList().get(id), musicController.getMusicList().get(id).getSong().getId());
         musicController.getMusicList().get(id).setClientPath(song.toAbsolutePath().toString());
     }
 
@@ -125,10 +125,10 @@ public class PlayButtonsComponent {
     }
 
     private boolean canGoBack() {
-        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() > 0;
+        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getSong().getId() > 0;
     }
 
     private boolean canSkip() {
-        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getId() < musicController.getMusicList().size() - 1;
+        return audioController.getCurrentlyPlaying() != null && audioController.getCurrentlyPlaying().getSong().getId() < musicController.getMusicList().size() - 1;
     }
 }

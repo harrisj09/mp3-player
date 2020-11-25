@@ -1,14 +1,14 @@
-package com.github.harrisj09.mp3.client.Application.controller;
+package com.github.harrisj09.mp3.client.application.controller;
 
-import com.github.harrisj09.mp3.client.Application.components.MusicNode;
+import com.github.harrisj09.mp3.client.application.components.MusicNode;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.github.harrisj09.mp3.client.Application.factories.ErrorFactory;
-import com.github.harrisj09.mp3.client.Application.model.MusicModel;
-import com.github.harrisj09.mp3.client.Application.model.queue.MusicQueueNode;
+import com.github.harrisj09.mp3.client.application.factories.ErrorFactory;
+import com.github.harrisj09.mp3.client.application.model.MusicModel;
+import com.github.harrisj09.mp3.client.application.model.queue.MusicQueueNode;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -57,7 +57,7 @@ public class AudioController {
         } else {
             System.out.println("Playing queue");
             MusicNode node = musicNode.getSong();
-            downloadSong(node.getId());
+            downloadSong(node.getSong().getId());
             currentlyPlaying = node;
             String filePath = node.getClientPath();
             media = new Media(new File(filePath).toURI().toString());
@@ -73,7 +73,7 @@ public class AudioController {
 
     public void downloadSong(int id) {
         System.out.println("Downloading song");
-        Path song = new MusicService(Paths.get("")).fetchMusicFile(musicModel.getMusicList().get(id), musicModel.getMusicList().get(id).getId());
+        Path song = new MusicService(Paths.get("")).fetchMusicFile(musicModel.getMusicList().get(id), musicModel.getMusicList().get(id).getSong().getId());
         musicModel.getMusicList().get(id).setClientPath(song.toAbsolutePath().toString());
     }
 
