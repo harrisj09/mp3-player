@@ -1,11 +1,15 @@
 package com.github.harrisj09.mp3.client.application.components;
 
+import com.github.harrisj09.mp3.client.application.controller.MusicController;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 public class MusicCell extends ListCell<MusicNode> {
+    private MusicController musicController;
 
     /*
     TODO
@@ -15,8 +19,9 @@ public class MusicCell extends ListCell<MusicNode> {
         https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
      */
 
-    public MusicCell() {
+    public MusicCell(MusicController musicController) {
         super();
+        this.musicController = musicController;
     }
 
     @Override
@@ -32,6 +37,10 @@ public class MusicCell extends ListCell<MusicNode> {
     }
 
     public Node getComponent(MusicNode item) {
-        return new HBox(item.getAddToQueue(), item.getPlayButton(), new Text(item.getSong().getName() + " - "), new Text(item.getSong().getArtist()), new Text(convertTime(item)));
+        Button playButton = new Button("Play");
+        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> musicController.playSingleSong(item.getSong()));
+        Button addToQueue = new Button("Add");
+        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> musicController.addSongToQueue(item.getSong()));
+        return new HBox(addToQueue, playButton, new Text(item.getSong().getName() + " - "), new Text(item.getSong().getArtist()), new Text(convertTime(item)));
     }
 }

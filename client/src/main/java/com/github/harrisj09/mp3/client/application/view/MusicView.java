@@ -44,7 +44,7 @@ public class MusicView {
         ListView<MusicNode> list = new ListView<>();
         ObservableList<MusicNode> songs = musicController.grabCenterContents();
         list.setItems(songs);
-        list.setCellFactory(param -> new MusicCell());
+        list.setCellFactory(param -> new MusicCell(musicController));
         return list;
     }
 

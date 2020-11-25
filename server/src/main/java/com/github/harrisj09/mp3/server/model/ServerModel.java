@@ -25,7 +25,7 @@ public class ServerModel {
             String fileName = fileEntry.getName();
             System.out.println(fileName);
             String artist = fileName.substring(0, fileName.indexOf("-") - 1);
-            String song = fileName.substring(fileName.indexOf("-") + 2);
+            String song = fileName.substring(fileName.indexOf("-") + 2, fileName.indexOf(".mp3"));
             Mp3File mp3File = new Mp3File(fileEntry);
             musicMap.put(counter, new ServerMusicNode(fileEntry.getPath(), artist, song, mp3File.getLengthInSeconds(), counter));
             counter++;
