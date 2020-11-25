@@ -2,7 +2,6 @@ package com.github.harrisj09.mp3.client.application.components;
 
 import com.github.harrisj09.mp3.client.application.controller.AudioController;
 import com.github.harrisj09.mp3.client.application.controller.MusicController;
-import com.github.harrisj09.mp3.client.application.model.queue.MusicQueueNode;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -62,11 +61,10 @@ public class PlayButtonsComponent {
     public Button skipButton() {
         Button skip = new Button("Skip");
         EventHandler<MouseEvent> skipEvent = e -> {
-            if(audioController.isInQueue() && musicController.getMusicQueue().getBack().getNext() != null) {
+            if(audioController.isInQueue() && musicController.getMusicQueue().getSize() > 1) {
                 musicController.getMusicQueue().dequeue();
                 audioController.pauseSong();
-                MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
-                audioController.playQueue(queueNode);
+                audioController.playQueue(musicController.getMusicQueue().getBack());
             } else {
                 if(canSkip()) {
                     int nodeId = audioController.getCurrentlyPlaying().getSong().getId();

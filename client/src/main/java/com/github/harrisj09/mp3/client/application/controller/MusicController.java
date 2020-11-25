@@ -3,7 +3,7 @@ package com.github.harrisj09.mp3.client.application.controller;
 import com.github.harrisj09.mp3.client.application.components.MusicNode;
 import com.github.harrisj09.mp3.client.application.components.PlayButtonsComponent;
 import com.github.harrisj09.mp3.client.application.model.MusicModel;
-import com.github.harrisj09.mp3.client.application.model.queue.MusicQueue;
+import com.github.harrisj09.mp3.client.application.model.queue.Queue;
 import com.github.harrisj09.mp3.client.domain.Song;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import javafx.collections.ObservableList;
@@ -31,7 +31,7 @@ public class MusicController {
         return musicModel.getMusicList();
     }
 
-    public MusicQueue getMusicQueue() {
+    public Queue getMusicQueue() {
         return musicModel.getMusicQueue();
     }
 

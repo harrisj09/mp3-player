@@ -1,8 +1,7 @@
 package com.github.harrisj09.mp3.client.application.model;
 
 import com.github.harrisj09.mp3.client.application.components.MusicNode;
-import com.github.harrisj09.mp3.client.application.controller.AudioController;
-import com.github.harrisj09.mp3.client.application.model.queue.MusicQueue;
+import com.github.harrisj09.mp3.client.application.model.queue.Queue;
 import com.github.harrisj09.mp3.client.domain.Song;
 import com.github.harrisj09.mp3.client.service.MusicService;
 import com.github.harrisj09.mp3.client.service.ServiceMusicNodeDto;
@@ -25,7 +24,7 @@ public class MusicModel {
      * downloaded from the server.
      */
 
-    private MusicQueue musicQueue = new MusicQueue();
+    private Queue queue = new Queue();
     private ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
     private List<ServiceMusicNodeDto> musicNodeDtoList = new MusicService(Paths.get("")).fetchMusicList();
 
@@ -53,8 +52,8 @@ public class MusicModel {
         return new MusicNode(song, clientPath);
     }
 
-    public MusicQueue getMusicQueue() {
-        return musicQueue;
+    public Queue getMusicQueue() {
+        return queue;
     }
 
     // TODO Finish this

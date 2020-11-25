@@ -6,7 +6,6 @@ import java.io.File;
 
 import com.github.harrisj09.mp3.client.application.factories.ErrorFactory;
 import com.github.harrisj09.mp3.client.application.model.MusicModel;
-import com.github.harrisj09.mp3.client.application.model.queue.MusicQueueNode;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -48,12 +47,11 @@ public class AudioController {
         });
     }
 
-    public void playQueue(MusicQueueNode musicNode) {
-        if (musicNode == null) {
+    public void playQueue(MusicNode node) {
+        if (node == null) {
             System.out.println("Do nothing");
         } else {
             System.out.println("Playing queue");
-            MusicNode node = musicNode.getSong();
             musicModel.downloadSong(node.getSong());
             currentlyPlaying = node;
             String filePath = node.getClientPath();
