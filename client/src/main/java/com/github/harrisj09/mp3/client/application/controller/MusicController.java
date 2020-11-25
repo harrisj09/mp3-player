@@ -48,7 +48,8 @@ public class MusicController {
     }
 
     public void addSongToQueue(Song song) {
-        getMusicQueue().enqueue(getMusicList().get(song.getId()));
+
+        musicModel.getMusicQueue().enqueue(getMusicList().get(song.getId()));
     }
 
     public void playSingleSong(Song song) {

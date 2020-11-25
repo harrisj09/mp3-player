@@ -40,7 +40,7 @@ public class MusicCell extends ListCell<MusicNode> {
         Button playButton = new Button("Play");
         playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> musicController.playSingleSong(item.getSong()));
         Button addToQueue = new Button("Add");
-        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> musicController.addSongToQueue(item.getSong()));
+        addToQueue.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> musicController.addSongToQueue(item.getSong()));
         return new HBox(addToQueue, playButton, new Text(item.getSong().getName() + " - "), new Text(item.getSong().getArtist()), new Text(convertTime(item)));
     }
 }

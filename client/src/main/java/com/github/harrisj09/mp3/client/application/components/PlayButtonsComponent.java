@@ -34,7 +34,6 @@ public class PlayButtonsComponent {
                 changeToggleText(playStatusToggleText);
             } else {
                 if(musicController.getMusicQueue().getBack() != null) {
-                    MusicQueueNode queueNode = musicController.getMusicQueue().getBack();
                     audioController.playQueue(musicController.getMusicQueue().getBack());
                 }
             }

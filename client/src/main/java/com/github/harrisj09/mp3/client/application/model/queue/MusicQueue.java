@@ -9,6 +9,7 @@ public class MusicQueue {
     private int size = 0;
 
     public void enqueue(MusicNode node) {
+        System.out.println(this);
         MusicQueueNode temp = new MusicQueueNode(node);
         if (back == null) {
             back = temp;
