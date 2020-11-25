@@ -31,7 +31,7 @@ public class MusicController {
         return musicModel.getMusicList();
     }
 
-    public Queue getMusicQueue() {
+    public Queue<MusicNode> getMusicQueue() {
         return musicModel.getMusicQueue();
     }
 

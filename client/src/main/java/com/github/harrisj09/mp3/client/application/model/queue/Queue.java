@@ -1,16 +1,14 @@
 package com.github.harrisj09.mp3.client.application.model.queue;
 
-import com.github.harrisj09.mp3.client.application.components.MusicNode;
+public class Queue<T> {
 
-public class Queue {
-
-    private QueueNode front;
-    private QueueNode back;
+    private QueueNode<T> front;
+    private QueueNode<T> back;
     private int size = 0;
 
-    public void enqueue(MusicNode node) {
+    public void enqueue(T node) {
         System.out.println(this);
-        QueueNode temp = new QueueNode(node);
+        QueueNode<T> temp = new QueueNode<>(node);
         if (back == null) {
             back = temp;
         }
@@ -24,8 +22,8 @@ public class Queue {
         size++;
     }
 
-    public MusicNode dequeue() {
-        QueueNode temp = null;
+    public T dequeue() {
+        QueueNode<T> temp = null;
         if (back != null) {
             temp = back;
             back = back.getNext();
@@ -34,11 +32,11 @@ public class Queue {
         return temp == null ? null : temp.getSong();
     }
 
-    public MusicNode getBack() {
+    public T getBack() {
         return back == null ? null : back.getSong();
     }
 
-    public MusicNode getFront() {
+    public T getFront() {
         return front == null ? null : front.getSong();
     }
 
@@ -46,24 +44,24 @@ public class Queue {
         return size;
     }
 
-    static private class QueueNode {
-        private MusicNode song;
-        private QueueNode next;
+    static private class QueueNode<T> {
+        private T song;
+        private QueueNode<T> next;
 
-        public QueueNode(MusicNode node) {
+        public QueueNode(T node) {
             this.song = node;
             next = null;
         }
 
-        public MusicNode getSong() {
+        public T getSong() {
             return song;
         }
 
-        public QueueNode getNext() {
+        public QueueNode<T> getNext() {
             return next;
         }
 
-        public void setNext(QueueNode next) {
+        public void setNext(QueueNode<T> next) {
             this.next = next;
         }
     }

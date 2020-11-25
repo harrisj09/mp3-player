@@ -24,7 +24,7 @@ public class MusicModel {
      * downloaded from the server.
      */
 
-    private Queue queue = new Queue();
+    private Queue<MusicNode> queue = new Queue<>();
     private ObservableList<MusicNode> musicList = FXCollections.observableArrayList();
     private List<ServiceMusicNodeDto> musicNodeDtoList = new MusicService(Paths.get("")).fetchMusicList();
 
@@ -52,7 +52,7 @@ public class MusicModel {
         return new MusicNode(song, clientPath);
     }
 
-    public Queue getMusicQueue() {
+    public Queue<MusicNode> getMusicQueue() {
         return queue;
     }
 
