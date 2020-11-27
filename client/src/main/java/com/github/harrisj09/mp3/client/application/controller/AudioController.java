@@ -1,22 +1,17 @@
 package com.github.harrisj09.mp3.client.application.controller;
 
 import com.github.harrisj09.mp3.client.application.components.MusicNode;
-
-import java.io.File;
-
-import com.github.harrisj09.mp3.client.application.factories.ErrorFactory;
 import com.github.harrisj09.mp3.client.application.model.MusicModel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
+
 
 public class AudioController {
-    // https://stackoverflow.com/questions/15635746/how-to-detect-song-playing-is-completed
-
     private MusicNode currentlyPlaying;
     private Media media = null;
     private MediaPlayer mediaPlayer = null;
-    private ErrorFactory errorFactory = new ErrorFactory();
     private MusicModel musicModel;
     private boolean inQueue = false;
 
@@ -28,8 +23,6 @@ public class AudioController {
         return inQueue;
     }
 
-    // https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
-    // When the song is done check if theres anything in the queue if true play that otherwise stop
     public void playSingleSong(MusicNode node) {
         if (mediaPlayer != null) {
             pauseSong();

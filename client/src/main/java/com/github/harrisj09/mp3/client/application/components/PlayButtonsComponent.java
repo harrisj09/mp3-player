@@ -3,7 +3,10 @@ package com.github.harrisj09.mp3.client.application.components;
 import com.github.harrisj09.mp3.client.application.controller.AudioController;
 import com.github.harrisj09.mp3.client.application.controller.MusicController;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class PlayButtonsComponent {
@@ -11,6 +14,7 @@ public class PlayButtonsComponent {
     public MusicController musicController;
     private AudioController audioController;
     private Button playStatus;
+    private Image playStatusImage;
     private String playStatusToggleText = "Play";
 
     // todo swap musiccontroller with musicmodel for grabbing list
@@ -21,6 +25,7 @@ public class PlayButtonsComponent {
 
     public Button playStatusToggle() {
         playStatus = new Button(playStatusToggleText);
+        playStatus.setPrefSize(40, 40);
         EventHandler<MouseEvent> toggleStatus = e -> {
             if (audioController.getCurrentlyPlaying() != null) {
                 if (playStatusToggleText.equals("Play")) {
@@ -43,7 +48,13 @@ public class PlayButtonsComponent {
 
     // TODO Fix this to handle non downloaded files
     public Button previousButton() {
-        Button previous = new Button("Previous");
+        // Image
+        Image img = new Image("prevarrow.png");
+        ImageView view = createImageView(img);
+        // Button
+        Button previous = new Button();
+        previous.setPadding(Insets.EMPTY);
+        previous.setGraphic(view);
         EventHandler<MouseEvent> previousEvent = e -> {
             if(canGoBack()) {
                 int nodeId = audioController.getCurrentlyPlaying().getSong().getId();
@@ -57,9 +68,14 @@ public class PlayButtonsComponent {
         return previous;
     }
 
-    // TODO Fix this to handle non downloaded files
     public Button skipButton() {
-        Button skip = new Button("Skip");
+        // Image
+        Image img = new Image("skiparrow.png");
+        ImageView view = createImageView(img);
+        // Button
+        Button skip = new Button();
+        skip.setPadding(Insets.EMPTY);
+        skip.setGraphic(view);
         EventHandler<MouseEvent> skipEvent = e -> {
             if(audioController.isInQueue() && musicController.getMusicQueue().getSize() > 1) {
                 musicController.getMusicQueue().dequeue();
@@ -79,9 +95,12 @@ public class PlayButtonsComponent {
         return skip;
     }
 
-    private String findFileInDirectory() {
-        
-        return null;
+    private ImageView createImageView(Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(40);
+        imageView.setFitWidth(50);
+        imageView.setPreserveRatio(true);
+        return imageView;
     }
 
     private void changeToggleText(String text) {

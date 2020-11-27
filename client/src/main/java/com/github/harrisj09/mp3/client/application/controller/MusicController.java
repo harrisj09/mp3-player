@@ -60,7 +60,6 @@ public class MusicController {
         playSong(id, audioController);
     }
 
-    // TODO use this with making prev and skip work
     public boolean songIsInLibrary(int counter) {
         return getMusicList().get(counter).getClientPath() != null;
     }
